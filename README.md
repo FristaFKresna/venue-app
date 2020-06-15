@@ -15,5 +15,12 @@ ke `node_modules > sequelize > lib > data-types.js` ganti variable `GeomFromText
 ### produksi
 `npm start`
 
+## Installasi client
+- `npm install`
+- `expo run android`
+- change `BASE_URL` di folder `utils`
+
 ### limitation
 - db integrity, venue bisa dimiliki user with role !renter
+- ...
+- ...
