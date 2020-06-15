@@ -1,27 +1,42 @@
-import { Router } from 'express'
-const { check, validationResult } = require('express-validator')
+import { Router, raw } from "express";
+import User from "../../modelSQL/User";
+import { Venue, Reservation, Package, DateTime, ReservedDateTime } from "../../modelSQL/Venue";
+import sequelize from "../../config/db";
+import { Op } from "sequelize";
+const route = Router();
 
-const route = Router()
+// TODO protect route
+route.get("/:id", (req, res) => {
+  User.findByPk(req.params.id, { include: Venue })
+    .then((user) => res.send(user.toJSON()))
+    .catch((err) => {
+      res.send({ errors: [{ msg: err.msg }] });
+    });
+});
 
-route.get('/', (req, res) => {
-  res.send('user route')
+route.get("/:id/reservations", async (req, res) => {
+  const reservations = await Reservation.findAll({
+    where: { userId: req.params.id },
+    include: [{ model: DateTime, include: [{ model: Package }] }],
+  });
+  res.send(reservations);
+});
+
+route.post("/:id/reservations",async (req, res) => {
+  console.log(req.body)
+  try {
+    const result = await sequelize.transaction(async () => {
+      const rsv = await Reservation.create({userId: req.params.id})
+      const currentDate = await DateTime.findOne({where: {date: req.body.date, packageId: req.body.packageId}})
+      if(currentDate) throw new Error('can\'t book the same package at the same time')
+      const date = await DateTime.create({date: req.body.date, packageId: req.body.packageId})
+      const rsvDate = await ReservedDateTime.create({reservationId: rsv.id, dateTimeId: date.id})
+      return rsvDate;
+    })
+    res.send(result.get({plain: true}))
+  } catch (err) {
+    res.status(400).send({errors: [{msg: err.message}]})
+  }
 })
 
-route.post(
-  '/',
-  [
-    // username must be an email
-    check('username').isEmail(),
-    // password must be at least 5 chars long
-    check('password', 'must > 5').isLength({ min: 5 }),
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    res.send(req.body)
-  }
-)
-
-export default route
+export default route;

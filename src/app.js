@@ -1,35 +1,52 @@
-import express from 'express'
-require('dotenv').config()
-import testRoute from './routes/api/testRoute'
-import userRoute from './routes/api/userRoute'
-import authRoute from './routes/api/authRoute'
-import protectedRoute from './routes/api/protectedRoute'
-import sequelize from './config/db'
-import User from './modelSQL/User'
+import express from "express";
+require("dotenv").config();
+import testRoute from "./routes/api/testRoute";
+import authRoute from "./routes/api/authRoute";
+import protectedRoute from "./routes/api/protectedRoute";
+import sequelize from "./config/db";
+import User from "./modelSQL/User";
+import { v4 as uuid } from "uuid";
+import users, { venues, packages } from "./config/dummyData";
+import { Venue, Package } from "./modelSQL/Venue";
+import venueRoute from "./routes/api/venueRoute";
+import userRoute from "./routes/api/userRoute";
+import packageRoute from "./routes/api/packageRoute";
 
+const app = express();
+console.log(process.env.MYSQL_USER);
+app.use(express.json());
 
-const app = express()
+app.use("/api/test", testRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/protected", protectedRoute);
+app.use("/api/venues", venueRoute);
+app.use("/api/users", userRoute);
+app.use('/api/packages', packageRoute)
 
-app.use(express.json())
-
-app.use('/api/test', testRoute)
-app.use('/api/users', userRoute)
-app.use('/api/auth', authRoute)
-app.use('/api/protected', protectedRoute)
-
-
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log('listening on port..', PORT)
+  console.log("listening on port..", PORT);
   sequelize
     .sync({ force: true })
     .then(() => {
       // create a dummy user
-      User.create({ email: 'maman@mail.co', password: '$2b$10$ufQfsIwz2onN/MKNI6M9b.5HPIf6Nhf9QyWGvP4bPUID3Faunpquu' })
-      .then(user => console.log('created user'))
-      .catch(console.log)
+      User.bulkCreate(users, { individualHooks: true })
+        .then((users) => {
+          users.forEach((user) => console.log(user.get({ plain: true })));
+          return Venue.bulkCreate(venues);
+        })
+        .then((venues) => {
+          venues.forEach((venue) => console.log(venue.get({ plain: true })));
+          return Package.bulkCreate(packages);
+        })
+        .then((packages) => {
+          packages.forEach((p) => {
+            console.log(p.get({ plain: true }));
+          });
+        })
+        .catch(console.log);
     })
-    .catch(err => {
-      console.error('Unable to connect to the database:', err);
+    .catch((err) => {
+      console.error("Unable to connect to the database:", err);
     });
-})
+});

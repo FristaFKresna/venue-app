@@ -11,3 +11,6 @@
 - menggunakan sequelize, tidak perlu buat tabel manual
 ### produksi
 `npm start`
+
+### limitation
+- db integrity, venue bisa dimiliki user with role !renter

@@ -52,15 +52,15 @@ route.post("/register", registerValidates, async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).send({ errors: errors.array() });
   }
-  const { email, password } = req.body;
+  const { email, password, username, role } = req.body;
 
   try {
     const user = await User.findOne({ where: { email } });
     if (user) throw new Error("user already exists!");
-    const salt = await bcrypt.genSalt(10);
-    console.log(salt);
-    const hash = await bcrypt.hash(password, salt);
-    const newUser = await User.create({ email, password: hash });
+    // not needed for a while
+    // const salt = await bcrypt.genSalt(10);
+    // const hash = await bcrypt.hash(password, salt);
+    const newUser = await User.create({ email, password: password, username, role });
     const token = jwt.sign({user: { id: newUser.id, email: newUser.email }}, JWT_SECRET, {
       expiresIn: "5 days",
     });
