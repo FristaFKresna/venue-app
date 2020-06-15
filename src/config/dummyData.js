@@ -30,7 +30,7 @@ class Venue {
       coordinates: [faker.address.longitude(), faker.address.latitude()],
     };
     this.imageUrl = faker.image.imageUrl(),
-    this.userId = [1, 2][Math.floor(Math.random() * 2)]
+    this.userId = [9, 10][Math.floor(Math.random() * 2)]
   }
 }
 
