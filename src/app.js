@@ -1,11 +1,8 @@
 import express from "express";
 require("dotenv").config();
-import testRoute from "./routes/api/testRoute";
 import authRoute from "./routes/api/authRoute";
-import protectedRoute from "./routes/api/protectedRoute";
 import sequelize from "./config/db";
 import User from "./modelSQL/User";
-import { v4 as uuid } from "uuid";
 import users, { venues, packages } from "./config/dummyData";
 import { Venue, Package } from "./modelSQL/Venue";
 import venueRoute from "./routes/api/venueRoute";
@@ -16,9 +13,7 @@ const app = express();
 console.log(process.env.MYSQL_USER);
 app.use(express.json());
 
-app.use("/api/test", testRoute);
 app.use("/api/auth", authRoute);
-app.use("/api/protected", protectedRoute);
 app.use("/api/venues", venueRoute);
 app.use("/api/users", userRoute);
 app.use('/api/packages', packageRoute)
