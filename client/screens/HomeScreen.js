@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {  StyleSheet, Text, View } from 'react-native';
+import {useSelector} from 'react-redux'
 import styled from "styled-components/native";
 
 export default function HomeScreen() {
+  const username = useSelector(state => state.auth.username)
   return (
     <Container>
-      <Text>hello</Text>
+      <Text>hello {username}</Text>
     </Container>
   );
 }
