@@ -7,6 +7,7 @@ import {
   TIME,
   DATEONLY,
   Sequelize,
+  DECIMAL
 } from "sequelize";
 
 export const Venue = sequelize.define("venue", {
@@ -19,6 +20,7 @@ export const Venue = sequelize.define("venue", {
   address: STRING(255),
   location: GEOMETRY("POINT"),
   imageUrl: STRING(255),
+  rating: DECIMAL(1)
 });
 
 export const Package = sequelize.define("package", {
@@ -29,7 +31,7 @@ export const Package = sequelize.define("package", {
 });
 
 export const DateTime = sequelize.define("dateTime", {
-  date: {type: DATEONLY, primaryKey: true},
+  date: {type: DATEONLY},
 });
 
 DateTime.belongsTo(Package);
