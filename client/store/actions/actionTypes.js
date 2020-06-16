@@ -1,2 +1,5 @@
 export const SET_USER = 'SET_USER'
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR'
+export const SET_VENUES = 'SET_VENUES'
+export const FETCH_VENUES = 'FETCH_VENUES'
+export const SET_VENUES_ERROR = 'SET_VENUES_ERROR'
