@@ -6,6 +6,7 @@ class User {
     this.password = faker.internet.password();
     this.username = faker.internet.userName();
     this.role = ["rentee", "renter"][Math.floor(Math.random() * 2)];
+    this.avatar = faker.internet.avatar()
   }
 }
 
@@ -15,6 +16,7 @@ const users = [
     password: "password",
     email: "maman@mail.co",
     role: "renter",
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/adobi/128.jpg'
   },
 ];
 for (let i = 0; i < 10; i++) {
@@ -29,13 +31,15 @@ class Venue {
       type: "Point",
       coordinates: [faker.address.longitude(), faker.address.latitude()],
     };
-    this.imageUrl = faker.image.imageUrl(),
-    this.userId = [9, 10][Math.floor(Math.random() * 2)]
+    this.imageUrl = `https://picsum.photos/seed/${Math.random()}/320/160`
+    this.userId = [9, 10][Math.floor(Math.random() * 2)],
+    // TODO: this is cringe
+    this.rating = Math.round( faker.random.number({min: 0, max: 5, precision: 0.1}) * 100) / 100
   }
 }
 
 export const venues = [];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 5; i++) {
   venues.push(new Venue());
 }
 
@@ -45,7 +49,7 @@ class Package {
     this.slotTimeStarts = "13:00";
     this.slotTimeEnds = "18:00";
     this.description = faker.lorem.sentence(5);
-    this.venueId = [9, 10][Math.floor(Math.random() * 2)];
+    this.venueId = [1, 2][Math.floor(Math.random() * 2)];
   }
 }
 
