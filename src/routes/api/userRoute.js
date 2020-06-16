@@ -25,12 +25,12 @@ route.get("/:id/reservations", async (req, res) => {
 route.post("/:id/reservations",async (req, res) => {
   console.log(req.body)
   try {
-    const result = await sequelize.transaction(async () => {
-      const rsv = await Reservation.create({userId: req.params.id})
+    const result = await sequelize.transaction(async (t) => {
+      const rsv = await Reservation.create({userId: req.params.id}, {transaction: t})
       const currentDate = await DateTime.findOne({where: {date: req.body.date, packageId: req.body.packageId}})
       if(currentDate) throw new Error('can\'t book the same package at the same time')
-      const date = await DateTime.create({date: req.body.date, packageId: req.body.packageId})
-      const rsvDate = await ReservedDateTime.create({reservationId: rsv.id, dateTimeId: date.id})
+      const date = await DateTime.create({date: req.body.date, packageId: req.body.packageId}, {transaction: t})
+      const rsvDate = await ReservedDateTime.create({reservationId: rsv.id, dateTimeId: date.id}, {transaction: t})
       return rsvDate;
     })
     res.send(result.get({plain: true}))
