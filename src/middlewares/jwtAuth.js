@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-import { Request } from "express";
 import { JWT_SECRET } from "../config/keys";
 
 export default (req, res, next) => {
