@@ -3,10 +3,10 @@
 GET http://localhost:{{$dotenv PORT}}/api/venues HTTP/1.1
 
 ### go to venue details
-GET http://localhost:{{$dotenv PORT}}/api/venues/9 HTTP/1.1
+GET http://localhost:{{$dotenv PORT}}/api/venues/1 HTTP/1.1
 
 ### venue has packages
-GET http://localhost:{{$dotenv PORT}}/api/venues/9/packages HTTP/1.1
+GET http://localhost:{{$dotenv PORT}}/api/venues/1/packages HTTP/1.1
 
 
 ### user detail (bonus: ada venue dianya juga)

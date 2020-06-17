@@ -21,8 +21,8 @@ POST http://localhost:{{$dotenv PORT}}/api/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "email": "testmail.com",
-    "password": "xxx"
+    "email": "test@mail.com",
+    "password": "fdafdsfaf"
 }
 
 ### 400 pass don't match 
