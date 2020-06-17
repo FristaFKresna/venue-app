@@ -20,7 +20,9 @@ ke `node_modules > sequelize > lib > data-types.js` ganti variable `GeomFromText
 - `expo run android`
 - change `BASE_URL` di folder `utils`
 
-### limitation
+### limitation a.k.a TODO
 - db integrity, venue bisa dimiliki user with role !renter
 - ...
 - ...
+- comment model
+- add package image

@@ -23,11 +23,19 @@ const VenueDetailsScreen = ({ route }) => {
       .post('/users/1/reservations', { date, packageId })
       .then(({ data }) => {
         console.log(data);
-        fetchVenue()
+        return fetchAvailablePackages()
+      }).then(({data}) => {
+          setVenueAvailableAtDate(data.map(elem => elem.id))
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const fetchAvailablePackages = () => {
+    return api.get('/venues/' + route.params.id + '/available', {
+      params: { date }
+    });
   };
 
   const fetchVenue = () => {
@@ -37,8 +45,8 @@ const VenueDetailsScreen = ({ route }) => {
         setVenue(data);
         setLoading(false);
         return api.get('/venues/' + route.params.id + '/available', {
-          params: { date }
-        });
+            params: { date }
+          })
       })
       .then(({ data }) => {
         setVenueAvailableAtDate(data.map((elem) => elem.id));
