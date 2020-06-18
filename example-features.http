@@ -10,7 +10,7 @@ GET http://localhost:{{$dotenv PORT}}/api/venues/1/packages HTTP/1.1
 
 
 ### user detail (bonus: ada venue dianya juga)
-GET http://localhost:{{$dotenv PORT}}/api/users/2 HTTP/1.1
+GET http://localhost:{{$dotenv PORT}}/api/users/4 HTTP/1.1
 
 ### detail paket
 GET http://localhost:{{$dotenv PORT}}/api/packages/4 HTTP/1.1
@@ -20,14 +20,18 @@ GET http://localhost:{{$dotenv PORT}}/api/venues/2/available
 ?date=2020-06-16T00:00:00.000Z
 
 ### cek daftar reservasi user(column belum dirapihin)
-GET http://localhost:{{$dotenv PORT}}/api/users/1/reservations HTTP/1.1
+GET http://localhost:{{$dotenv PORT}}/api/users/4/reservations HTTP/1.1
 
 ### bikin reservasi, asumsi sekali request udah bayar
 POST http://localhost:{{$dotenv PORT}}/api/users/1/reservations
 content-type: application/json
 
 {
-    "date": "2020-06-16T14:07:50.000Z",
-    "packageId": 1
+    "date": "2020-06-17T14:07:50.000Z",
+    "packageId": 1,
+    "numPeople": 2,
+    "bank": "bni"
 }
 
+### cek daftar reservasi user(column belum dirapihin)
+GET http://localhost:{{$dotenv PORT}}/api/users/1/orders HTTP/1.1

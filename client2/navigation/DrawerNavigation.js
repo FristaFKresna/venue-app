@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import VenuesNavigator from './VenuesNavigator';
 import TransactionNavigator from './TransactionNavigator';
 import ReservationNavigator from './ReservationNavigator';
+import OrderNavigator from './OrderNavigator';
 
 const Drawer = createDrawerNavigator();
 
@@ -15,5 +16,6 @@ export default () => (
     />
     <Drawer.Screen name="Transaction" component={TransactionNavigator} />
     <Drawer.Screen name="Reservations" component={ReservationNavigator} />
+    <Drawer.Screen name='Orders' component={OrderNavigator} />
   </Drawer.Navigator>
 );

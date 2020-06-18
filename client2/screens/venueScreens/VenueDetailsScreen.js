@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, ActivityIndicator, RefreshControl } from 'react-native';
 import { api } from '../../utils/axios';
 import { FlatList } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const VenueDetailsScreen = ({ route }) => {
+const VenueDetailsScreen = ({ route, navigation }) => {
   // TODO add refresh control
   // TODO rapihin style
   // TODO show error
@@ -18,24 +18,28 @@ const VenueDetailsScreen = ({ route }) => {
   const [ date, setDate ] = useState(new Date());
   const [ venueAvailableAtDate, setVenueAvailableAtDate ] = useState([]);
 
-  const onMakeRsv = (packageId) => {
-    api
-      .post('/users/1/reservations', { date, packageId })
-      .then(({ data }) => {
-        console.log(data);
-        return fetchAvailablePackages()
-      }).then(({data}) => {
-          setVenueAvailableAtDate(data.map(elem => elem.id))
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const onMakeRsv = (packageId) => {
+  //   api
+  //     .post('/users/1/reservations', { date, packageId })
+  //     .then(({ data }) => {
+  //       console.log(data);
+  //       return fetchAvailablePackages()
+  //     }).then(({data}) => {
+  //         setVenueAvailableAtDate(data.map(elem => elem.id))
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-  const fetchAvailablePackages = () => {
-    return api.get('/venues/' + route.params.id + '/available', {
-      params: { date }
-    });
+  // const fetchAvailablePackages = () => {
+  //   return api.get('/venues/' + route.params.id + '/available', {
+  //     params: { date }
+  //   });
+  // };
+
+  const onMakeRsv = (pkg) => {
+    navigation.navigate('VenuePayment', { package: pkg, date: date.toISOString() });
   };
 
   const fetchVenue = () => {
@@ -45,8 +49,8 @@ const VenueDetailsScreen = ({ route }) => {
         setVenue(data);
         setLoading(false);
         return api.get('/venues/' + route.params.id + '/available', {
-            params: { date }
-          })
+          params: { date }
+        });
       })
       .then(({ data }) => {
         setVenueAvailableAtDate(data.map((elem) => elem.id));
@@ -55,6 +59,7 @@ const VenueDetailsScreen = ({ route }) => {
         console.log(err);
       });
   };
+
   useEffect(fetchVenue, [ date ]);
 
   const onChangeDate = (event, date) => {
@@ -72,15 +77,17 @@ const VenueDetailsScreen = ({ route }) => {
           <FlatList
             data={venue.packages}
             keyExtractor={(item) => item.id.toString()}
+            refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchVenue} />}
             renderItem={({ item }) => {
               return (
                 <View style={{ backgroundColor: 'white', padding: 10 }}>
                   <Text style={{ fontSize: 16, fontWeight: 'bold' }}>package name: {item.name}</Text>
                   <Text>start: {item.slotTimeStarts}</Text>
+                  <Text>price per pax: {item.pricePerPax}</Text>
                   {/* <Text>end: {item.slotTimeEnds}</Text> */}
                   <Text>status: {venueAvailableAtDate.includes(item.id) ? 'available' : 'booked'}</Text>
                   <Text
-                    onPress={() => onMakeRsv(item.id)}
+                    onPress={() => onMakeRsv(item)}
                     style={{
                       color: 'palevioletred',
                       fontSize: 18,

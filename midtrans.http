@@ -1,0 +1,87 @@
+###
+POST https://api.sandbox.midtrans.com/v2/charge
+Content-Type: application/json
+Authorization: Basic U0ItTWlkLXNlcnZlci1mdTRKWmlsT1d0eU5xVjVUZDJPaFpSbUQ6Cg==
+Accept: application/json
+
+{
+    "payment_type": "bank_transfer",
+    "transaction_details": {
+        "gross_amount": 5000000,
+        "order_id": "x12331d2d3"
+    },
+    "item_details": [
+    {
+       "id": "1",
+       "price": 5000000,
+       "name": "sunset apakcage",
+       "quantity": 1
+    }
+   ],
+   "bank_transfer":{
+     "bank": "bni"
+  }
+}
+
+###
+POST http://localhost:5000/api/midtrans/charge
+Content-Type: application/json
+Authorization: Basic U0ItTWlkLXNlcnZlci1mdTRKWmlsT1d0eU5xVjVUZDJPaFpSbUQ6Cg==
+Accept: application/json
+
+###
+POST http://localhost:5000/api/midtrans/check
+Content-Type: application/json
+Authorization: Basic U0ItTWlkLXNlcnZlci1mdTRKWmlsT1d0eU5xVjVUZDJPaFpSbUQ6Cg==
+Accept: application/json
+
+{
+    "transaction_id": "db8a8ba4-149e-42d0-b2c0-a6f540359535"
+}
+
+###
+GET http://zano-d17ae097.localhost.run/api/midtrans/test HTTP/1.1
+###
+GET http://zano-d17ae097.localhost.run/api/midtrans/test HTTP/1.1
+
+### notif response
+# {
+#   va_numbers: [ { va_number: '55676053697', bank: 'bca' } ],
+#   transaction_time: '2020-06-17 20:23:51',
+#   transaction_status: 'settlement',
+#   transaction_id: 'da997a46-bb88-4137-bd3e-aedfcd1d3f7f',
+#   status_message: 'midtrans payment notification',
+#   status_code: '200',
+#   signature_key: '05deb38a686f0e1e701d68f869284ddd5c8ed53e745ff09f72718590c53239c60e3525b11867e4765dcdfd3273f7d6e4c03be65831ed1ef8e82f1d3416b493c6',
+#   settlement_time: '2020-06-17 20:24:23',
+#   payment_type: 'bank_transfer',
+#   payment_amounts: [],
+#   order_id: 'order-101c-1592400229',
+#   merchant_id: 'G498255676',
+#   gross_amount: '44000.00',
+#   fraud_status: 'accept',
+#   currency: 'IDR'
+# }
+
+# notif masuk
+# {
+#   va_numbers: [ { va_number: '55676053697', bank: 'bca' } 
+# ],
+#   transaction_time: '2020-06-17 20:23:51',
+#   transaction_status: 'pending',
+#   transaction_id: 'da997a46-bb88-4137-bd3e-aedfcd1d3f7f', 
+#   status_message: 'midtrans payment notification',        
+#   status_code: '201',
+#   signature_key: '3b17b7ddbb607dfadfd519446294fcef6d83d5b74aadc977217205fd59d0cf4735711931269c1fa96169653f42ede27293f9b3e4b9853948c1b72edf52ded101',
+#   payment_type: 'bank_transfer',
+#   payment_amounts: [],
+#   order_id: 'order-101c-1592400229',
+#   merchant_id: 'G498255676',
+#   gross_amount: '44000.00',
+#   fraud_status: 'accept',
+#   currency: 'IDR'
+# }
+
+
+
+

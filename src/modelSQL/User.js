@@ -2,11 +2,11 @@ import { Sequelize, UUID, STRING } from "sequelize";
 import sequelize from "../config/db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-import { Venue, Reservation } from "./Venue";
+import { Venue, Reservation, Comment } from "./Venue";
+
 const User = sequelize.define(
   "user",
   {
-    // id: { primaryKey: true, type: UUID },
     email: {
       type: Sequelize.STRING(45),
       allowNull: false,
@@ -53,7 +53,7 @@ User.beforeCreate((user) => {
     });
 });
 
-
+User.hasMany(Comment)
 User.hasMany(Venue)
 User.hasMany(Reservation)
 

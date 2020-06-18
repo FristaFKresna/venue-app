@@ -8,6 +8,9 @@ import { Venue, Package } from "./modelSQL/Venue";
 import venueRoute from "./routes/api/venueRoute";
 import userRoute from "./routes/api/userRoute";
 import packageRoute from "./routes/api/packageRoute";
+import connection from "./config/mysql";
+import midtransRoute from './routes/api/midtransRoute'
+
 
 const app = express();
 console.log(process.env.MYSQL_USER);
@@ -17,6 +20,9 @@ app.use("/api/auth", authRoute);
 app.use("/api/venues", venueRoute);
 app.use("/api/users", userRoute);
 app.use('/api/packages', packageRoute)
+app.use('/api/midtrans', midtransRoute)
+
+connection.connect()
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

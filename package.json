@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "nodemonConfig": {
-    "ignore": ["test/*", "docs/*", "client/*"],
+    "ignore": [
+      "test/*",
+      "docs/*",
+      "client/*",
+      "client2/*"
+    ],
     "delay": "2500"
   },
   "main": "index.js",
@@ -25,10 +30,13 @@
     "express": "^4.17.1",
     "express-validator": "^6.5.0",
     "faker": "^4.1.0",
+    "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
+    "midtrans-client": "^1.1.0",
     "moment": "^2.26.0",
     "mongoose": "^5.9.16",
     "mysql2": "^2.1.0",
+    "npm": "^6.14.5",
     "react": "^16.13.1",
     "sequelize": "^5.21.12",
     "uuid": "^8.1.0"
