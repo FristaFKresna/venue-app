@@ -1,6 +1,5 @@
 import sequelize from '../config/db';
 import { INTEGER, STRING, GEOMETRY, DATE, TIME, DATEONLY, Sequelize, DECIMAL, UUID, BIGINT } from 'sequelize';
-import User from './User';
 import { v4 as uuidv4 } from 'uuid';
 
 export const Venue = sequelize.define('venue', {
@@ -47,9 +46,11 @@ export const ReservedDateTime = sequelize.define('reservedDateTime', {
   }
 });
 
-export const Comment = sequelize.define('comment', {
-  body: {
+export const Review = sequelize.define('review', {
+  comment: {
     type: STRING(255)
+  }, rating: {
+    type: DECIMAL(1)
   }
 });
 
@@ -79,3 +80,4 @@ Reservation.belongsToMany(DateTime, { through: ReservedDateTime });
 DateTime.belongsToMany(Reservation, { through: ReservedDateTime });
 
 Venue.hasMany(Package);
+Venue.hasMany(Review)
