@@ -1,5 +1,5 @@
 import sequelize from '../config/db';
-import { INTEGER, STRING, GEOMETRY, DATE, TIME, DATEONLY, Sequelize, DECIMAL, UUID, BIGINT } from 'sequelize';
+import { INTEGER, STRING, GEOMETRY, DATE, TIME, DATEONLY, Sequelize, DECIMAL, UUID, BIGINT, TEXT } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 
 export const Venue = sequelize.define('venue', {
@@ -9,15 +9,16 @@ export const Venue = sequelize.define('venue', {
     autoIncrement: true
   },
   name: STRING(255),
-  address: STRING(255),
+  address: TEXT,
   location: GEOMETRY('POINT'),
   imageUrl: STRING(255),
-  rating: DECIMAL(1)
+  rating: DECIMAL(1),
+  city: STRING(150)
 });
 
 export const Package = sequelize.define('package', {
   name: STRING(255),
-  description: STRING(255),
+  description: TEXT,
   pricePerPax: DECIMAL,
   slotTimeStarts: TIME,
   slotTimeEnds: TIME

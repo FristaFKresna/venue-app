@@ -10,7 +10,9 @@ import { Op } from "sequelize";
 const route = Router();
 
 route.get("/", (req, res) => {
-  Venue.findAll()
+  let filter = req.query.city ? {where: {city: req.query.city}} : {}
+  
+  Venue.findAll(filter)
     .then((venues) => {
       res.send(venues);
     })

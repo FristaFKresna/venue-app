@@ -20,17 +20,14 @@ function App(props) {
   return (
     <View style={styles.container}>
       {/* <StatusBar /> */}
-      <NavigationContainer theme={MyTheme}>{!auth.username ? <AuthNavigator /> : <DrawerNavigation />}</NavigationContainer>
+      <NavigationContainer theme={MyTheme}>{auth.username ? <AuthNavigator /> : <DrawerNavigation />}</NavigationContainer>
     </View>
   );
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  }
+  container: {flex: 1}
 });
 
 export default withStore(App);

@@ -1,7 +1,9 @@
 export const COLORS = {
-    main: '#EBA1A1',
-    secondary: '#FFE3D5',
+    main: '#EBA1A2',
+    secondary: '#FDEBE4',
+    tertiary: '#91b8c2',
     title: '#252525',
     body: "#848484",
-    disabled: '#D9D8D8',
+    text: '#555555',
+    disabled: '#EEEEED',
 }

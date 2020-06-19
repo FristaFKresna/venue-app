@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, RefreshControl } from 'react-native';
+import { StyleSheet, Text, View, Image, ActivityIndicator, RefreshControl, Dimensions, Button } from 'react-native';
 import { api } from '../../utils/axios';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { COLORS } from '../../utils/colors';
+import NumberFormat from 'react-number-format';
 
 const VenueDetailsScreen = ({ route, navigation }) => {
   // TODO add refresh control
@@ -17,26 +19,6 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   const [ datePickerShown, setDatePickerShown ] = useState(false);
   const [ date, setDate ] = useState(new Date());
   const [ venueAvailableAtDate, setVenueAvailableAtDate ] = useState([]);
-
-  // const onMakeRsv = (packageId) => {
-  //   api
-  //     .post('/users/1/reservations', { date, packageId })
-  //     .then(({ data }) => {
-  //       console.log(data);
-  //       return fetchAvailablePackages()
-  //     }).then(({data}) => {
-  //         setVenueAvailableAtDate(data.map(elem => elem.id))
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // const fetchAvailablePackages = () => {
-  //   return api.get('/venues/' + route.params.id + '/available', {
-  //     params: { date }
-  //   });
-  // };
 
   const onMakeRsv = (pkg) => {
     navigation.navigate('VenuePayment', { package: pkg, date: date.toISOString() });
@@ -68,35 +50,60 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View>
+    <View style={{ padding: 20 }}>
       {!loading ? (
         <View>
           <Image source={{ uri: venue.imageUrl }} style={{ height: 150 }} />
-          <Text>venue name: {venue.name}</Text>
-          <Text>venue adress: {venue.address}</Text>
+          <Text style={{ color: COLORS.text, fontSize: 24, fontWeight: 'bold', marginVertical: 10 }}>{venue.name}</Text>
+          <Text style={{ color: COLORS.text, fontSize: 18 }}>{venue.address}</Text>
+          <View style={{ flexDirection: 'row', marginVertical: 30 }}>
+            <AntDesign name="calendar" color={COLORS.body} size={60} />
+            <View>
+              <Text style={{ color: COLORS.text, fontWeight: 'bold', fontSize: 18 }}>
+                Package available at selected date:{' '}
+              </Text>
+              <Text style={{ fontSize: 24, color: COLORS.tertiary }}>{date.toDateString()}</Text>
+              <Text style={{ textDecorationLine: 'underline' }} onPress={() => setDatePickerShown(true)}>
+                Change date!
+              </Text>
+            </View>
+          </View>
           <FlatList
+            horizontal
             data={venue.packages}
             keyExtractor={(item) => item.id.toString()}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchVenue} />}
             renderItem={({ item }) => {
               return (
                 <View style={{ backgroundColor: 'white', padding: 10 }}>
-                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>package name: {item.name}</Text>
-                  <Text>start: {item.slotTimeStarts}</Text>
-                  <Text>price per pax: {item.pricePerPax}</Text>
-                  {/* <Text>end: {item.slotTimeEnds}</Text> */}
-                  <Text>status: {venueAvailableAtDate.includes(item.id) ? 'available' : 'booked'}</Text>
-                  <Text
-                    onPress={() => onMakeRsv(item)}
-                    style={{
-                      color: 'palevioletred',
-                      fontSize: 18,
-                      fontWeight: 'bold',
-                      textDecorationLine: 'underline'
-                    }}
-                  >
-                    make rsv
+                  <Text style={{ fontSize: 18, fontWeight: 'bold', color: COLORS.text, marginVertical: 5 }}>
+                    {item.name}
                   </Text>
+                  <Text style={{ fontSize: 16, marginVertical: 5 }}>Date: {date.toDateString()}</Text>
+                  <Text style={{ fontSize: 16, marginVertical: 5 }}>
+                    Price per/pax:{' '}
+                    <NumberFormat
+                      value={item.pricePerPax}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      prefix={'Rp'}
+                      renderText={(text) => <Text>{text}</Text>}
+                    />
+                  </Text>
+                  {/* <Text>end: {item.slotTimeEnds}</Text> */}
+                  <Text style={{ fontSize: 16, marginVertical: 5, marginBottom: 20 }}>
+                    Status:{' '}
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        color: !venueAvailableAtDate.includes(item.id) ? 'red' : COLORS.tertiary
+                      }}
+                    >
+                      {venueAvailableAtDate.includes(item.id) ? 'available' : 'booked'}
+                    </Text>
+                  </Text>
+                  <Button onPress={() => onMakeRsv(item)} title="make rsv" color={COLORS.main} />
                 </View>
               );
             }}
@@ -105,17 +112,11 @@ const VenueDetailsScreen = ({ route, navigation }) => {
       ) : (
         <ActivityIndicator />
       )}
-      <View>
-        <Text>select date</Text>
-        <AntDesign name="calendar" size={60} onPress={() => setDatePickerShown(true)} />
-      </View>
 
-      <Text>selected date: {date.toDateString()}</Text>
+      {/* showing available packages */}
       {datePickerShown && (
         <DateTimePicker mode={'date'} is24Hour={true} display="default" value={date} onChange={onChangeDate} />
       )}
-
-      {/* showing available packages */}
     </View>
   );
 };
