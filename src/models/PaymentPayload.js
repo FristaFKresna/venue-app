@@ -24,5 +24,10 @@ export class PackagePayment {
     this.bank_transfer = {
       bank: options.bank || 'bni'
     };
+
+    this.custom_expiry = {
+      expiry_duration: options.expireMin || 2,
+      unit: 'minute'
+    };
   }
 }

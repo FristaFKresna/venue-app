@@ -1,7 +1,7 @@
 
 ### user query venues
-GET http://localhost:{{$dotenv PORT}}/api/venues HTTP/1.1
-
+GET http://localhost:{{$dotenv PORT}}/api/venues
+?city=jakarta
 ### go to venue details
 GET http://localhost:{{$dotenv PORT}}/api/venues/1 HTTP/1.1
 
@@ -20,15 +20,15 @@ GET http://localhost:{{$dotenv PORT}}/api/venues/2/available
 ?date=2020-06-16T00:00:00.000Z
 
 ### cek daftar reservasi user(column belum dirapihin)
-GET http://localhost:{{$dotenv PORT}}/api/users/4/reservations HTTP/1.1
+GET http://localhost:{{$dotenv PORT}}/api/users/1/reservations HTTP/1.1
 
 ### bikin reservasi, asumsi sekali request udah bayar
 POST http://localhost:{{$dotenv PORT}}/api/users/1/reservations
 content-type: application/json
 
 {
-    "date": "2020-06-17T14:07:50.000Z",
-    "packageId": 1,
+    "date": "2020-01-17T14:07:50.000Z",
+    "packageId": 2,
     "numPeople": 2,
     "bank": "bni"
 }

@@ -43,7 +43,7 @@ route.post('/:id/reservations', async (req, res) => {
         new PackagePayment(
           order.total,
           order.id,
-          { bank: req.body.bank, first_name: user.firstName, last_name: user.lastName, email: user.email },
+          { bank: req.body.bank, first_name: user.firstName, last_name: user.lastName, email: user.email, expireMin: 1 },
           pkg
         )
       );
@@ -66,8 +66,10 @@ route.post('/:id/reservations', async (req, res) => {
 });
 
 route.get('/:id/orders', (req, res) => {
-  User.findByPk(req.params.id, { include: [ { model: Reservation, include: Order } ] })
-    .then((user) => res.send(user.toJSON()))
+  User.findByPk(req.params.id, {
+    include: [ { model: Reservation, include: [ { model: Order }, { model: DateTime, include: Package } ] } ]
+  })
+    .then((user) => res.send(user.reservations))
     .catch((err) => res.send(err));
 });
 

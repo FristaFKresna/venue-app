@@ -8,7 +8,7 @@ Accept: application/json
     "payment_type": "bank_transfer",
     "transaction_details": {
         "gross_amount": 5000000,
-        "order_id": "x12331d2d3"
+        "order_id": "fdffddfafdff"
     },
     "item_details": [
     {
@@ -20,6 +20,9 @@ Accept: application/json
    ],
    "bank_transfer":{
      "bank": "bni"
+  },  "custom_expiry": {
+      "expiry_duration": 60,
+      "unit": "second"
   }
 }
 
@@ -36,7 +39,7 @@ Authorization: Basic U0ItTWlkLXNlcnZlci1mdTRKWmlsT1d0eU5xVjVUZDJPaFpSbUQ6Cg==
 Accept: application/json
 
 {
-    "transaction_id": "db8a8ba4-149e-42d0-b2c0-a6f540359535"
+    "transaction_id": "14431466-2735-4050-b1e1-2c15f9031f98"
 }
 
 ###
@@ -83,5 +86,44 @@ GET http://zano-d17ae097.localhost.run/api/midtrans/test HTTP/1.1
 # }
 
 
+# Transaction notification received. Order ID: 4dfd2c27-cf3c-422d-aea6-9e99b1d438d1. Transaction status: pending. Fraud status: accept.<br>Raw notification object:<pre>{
+#   "va_numbers": [
+#     {
+#       "bank": "bca",
+#       "va_number": "55676239337"
+#     }
+#   ],
+#   "payment_amounts": [],
+#   "transaction_time": "2020-06-19 20:48:30",      
+#   "gross_amount": "5000000.00",
+#   "currency": "IDR",
+#   "order_id": "4dfd2c27-cf3c-422d-aea6-9e99b1d438d1",
+#   "payment_type": "bank_transfer",
+#   "signature_key": "08bd158155ad1c09b3a316f08ddae228edb42bca86872de51d095f71461baf7aaea96d7e01bd8fdbc7777a1c72db1197fa1f54b9935a231f864547a151918bf5",  "status_code": "201",
+#   "transaction_id": "46105143-ada5-4b92-b6f2-1fc2f96a3628",
+#   "transaction_status": "pending",
+#   "fraud_status": "accept",
+#   "status_message": "Success, transaction is found",
+#   "merchant_id": "G498255676"
+# }</pre>
 
-
+Transaction notification received. Order ID: fdffddfafdff. Transaction status: expire. Fraud status: accept.<br>Raw notification object:<pre>{
+#   "va_numbers": [
+#     {
+#       "bank": "bni",
+#       "va_number": "9885567624806502"
+#     }
+#   ],
+#   "payment_amounts": [],
+#   "transaction_time": "2020-06-19 20:52:48",
+#   "gross_amount": "5000000.00",
+#   "currency": "IDR",
+#   "order_id": "fdffddfafdff",
+#   "payment_type": "bank_transfer",
+#   "signature_key": "872e8c23145d1861dcf3fd3511c02e4250da0a26c8a75ef35d49fa16f9ac50078cc5f16229b2218ac5b0a3b2e4fd6bb26030558c9e2a6136d631cc803ed3fb0d",
+#   "status_code": "407",
+#   "transaction_id": "eb1bb3b4-1f43-4c81-bc8e-484457b717b7",      
+#   "transaction_status": "expire",
+#   "fraud_status": "accept",
+#   "status_message": "Success, transaction is found",
+#   "merchant_id": "G498255676"
