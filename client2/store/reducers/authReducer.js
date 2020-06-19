@@ -1,4 +1,4 @@
-import { SET_USER, SET_AUTH_ERROR } from '../actions/actionTypes';
+import { SET_USER, SET_AUTH_ERROR, CLEAR_AUTH_ERROR } from '../actions/actionTypes';
 
 const initialState = {
   username: null,
@@ -21,6 +21,12 @@ export default (state = initialState, action) => {
         isLoading: false,
         errors: [ ...state.errors, ...action.payload ]
       };
+    }
+    case CLEAR_AUTH_ERROR: {
+      return {
+        ...state,
+        errors: []
+      }
     }
     default:
       return state;

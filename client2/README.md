@@ -5,3 +5,5 @@
 - cari lagi di file
 - tambah avatar di drawer
 - styling login register
+- email verif
+- comment rating
