@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { Venue, Package, ReservedDateTime, DateTime, Reservation, Order } from '../../modelSQL/Venue';
+import { Venue, Package, ReservedDateTime, DateTime, Reservation, Order, Review } from '../../modelSQL/Venue';
+import User from '../../modelSQL/User';
 import { Op } from 'sequelize';
 
 const route = Router();
@@ -7,21 +8,32 @@ const route = Router();
 route.get('/', (req, res) => {
   let filter = req.query.city ? { where: { city: req.query.city } } : {};
 
-  Venue.findAll(filter)
+  Venue.findAll({ ...filter, include: [ { model: Review, attributes: [ 'rating' ] } ] })
     .then((venues) => {
-      res.send(venues);
+      const newVenues = venues.map((venue) => {
+        if (venue.reviews.length > 0) {
+          const avgRating = venue.reviews.reduce((acc, curr) => acc + +curr.rating, 0) / venue.reviews.length;
+          venue.rating = avgRating;
+        } else {
+          venue.rating = 0;
+        }
+        return venue;
+      });
+      res.send(newVenues);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send({ errors: [ { msg: err.msg } ] });
     });
 });
 
 route.get('/:id', (req, res) => {
-  Venue.findByPk(req.params.id, { include: Package })
+  Venue.findByPk(req.params.id, { include: [ { model: Package }, { model: Review, include: [ { model: User } ] } ] })
     .then((venue) => {
       res.send(venue.get({ plain: true }));
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send({ errors: [ { msg: err.msg } ] });
     });
 });

@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, RefreshControl, Dimensions, Button } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ActivityIndicator,
+  RefreshControl,
+  Dimensions,
+  Button,
+  Modal
+} from 'react-native';
 import { api } from '../../utils/axios';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { COLORS } from '../../utils/colors';
 import NumberFormat from 'react-number-format';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const VenueDetailsScreen = ({ route, navigation }) => {
-  // TODO add refresh control
   // TODO rapihin style
   // TODO show error
   // TODO if booked button disabled
-  // TODOalso styling
-  // TODO refresh pull
   const [ venue, setVenue ] = useState(null);
   const [ loading, setLoading ] = useState(true);
   const [ datePickerShown, setDatePickerShown ] = useState(false);
@@ -45,10 +53,12 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   useEffect(fetchVenue, [ date ]);
 
   const onChangeDate = (event, date) => {
-    setLoading(true)
+    setLoading(true);
     setDatePickerShown(false);
     setDate(date || new Date());
   };
+
+  const [ modalVisible, setModalVisible ] = useState(true);
 
   return (
     <View style={{ padding: 20 }}>
@@ -72,7 +82,7 @@ const VenueDetailsScreen = ({ route, navigation }) => {
           <FlatList
             horizontal
             data={venue.packages}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => (item.id ? item.id.toString() : null)}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchVenue} />}
             renderItem={({ item }) => {
               return (
@@ -118,10 +128,86 @@ const VenueDetailsScreen = ({ route, navigation }) => {
       {datePickerShown && (
         <DateTimePicker mode={'date'} is24Hour={true} display="default" value={date} onChange={onChangeDate} />
       )}
+      <ScrollView>
+        {venue.reviews &&
+          venue.reviews.map((review) => {
+            return (
+              <View key={review.id}>
+                <Text>{review.user.username}</Text>
+                <Text>{review.comment}</Text>
+              </View>
+            );
+          })}
+      </ScrollView>
+      <Button
+        color={COLORS.main}
+        title="review"
+        onPress={() => {
+          setModalVisible(!modalVisible);
+        }}
+      />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={{ padding: 10, backgroundColor: '#2196F3' }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
 export default VenueDetailsScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  openButton: {
+    backgroundColor: '#F194FF',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center'
+  }
+});

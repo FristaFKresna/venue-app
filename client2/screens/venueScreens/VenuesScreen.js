@@ -37,7 +37,7 @@ const VenuesScreen = ({ navigation, route }) => {
         }
         style={{ backgroundColor: 'white' }}
         data={venues}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id ? item.id.toString() : null}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
@@ -54,6 +54,7 @@ const VenuesScreen = ({ navigation, route }) => {
                 readonly
                 ratingColor={COLORS.main}
                 type="custom"
+                ratingBackgroundColor={COLORS.body}
                 ratingTextColor={COLORS.main}
                 startingValue={+item.rating}
                 style={styles.rating}

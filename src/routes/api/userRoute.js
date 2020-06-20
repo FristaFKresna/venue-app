@@ -1,6 +1,6 @@
 import { Router, raw } from 'express';
 import User from '../../modelSQL/User';
-import { Venue, Reservation, Package, DateTime, ReservedDateTime, Order } from '../../modelSQL/Venue';
+import { Venue, Reservation, Package, DateTime, ReservedDateTime, Order, Review } from '../../modelSQL/Venue';
 import sequelize from '../../config/db';
 import { Op } from 'sequelize';
 import core from '../../config/midtrans';
@@ -14,6 +14,7 @@ route.get('/:id', (req, res) => {
   });
 });
 
+// get user rvvs
 route.get('/:id/reservations', async (req, res) => {
   const reservations = await Reservation.findAll({
     where: { userId: req.params.id },
@@ -22,6 +23,7 @@ route.get('/:id/reservations', async (req, res) => {
   res.send(reservations);
 });
 
+// make rsvs
 route.post('/:id/reservations', async (req, res) => {
   console.log(req.body);
 
@@ -71,7 +73,6 @@ route.post('/:id/reservations', async (req, res) => {
         { transaction: t }
       );
       return { response, order };
-      // return rsvDate
     });
 
     res.send(result);
@@ -80,12 +81,26 @@ route.post('/:id/reservations', async (req, res) => {
   }
 });
 
+// get orders
 route.get('/:id/orders', (req, res) => {
   User.findByPk(req.params.id, {
     include: [ { model: Reservation, include: [ { model: Order }, { model: DateTime, include: Package } ] } ]
   })
     .then((user) => res.send(user.reservations))
     .catch((err) => res.send(err));
+});
+
+// make comments
+route.post('/:id/reviews', (req, res) => {
+  const { rating, comment, venueId } = req.body;
+  console.log(req.body)
+  Review.create({ rating: rating, comment: comment, userId: req.params.id, venueId: venueId })
+    .then((review) => {
+      res.send(review.toJSON());
+    })
+    .catch((err) => {
+      res.send({ errors: [ { msg: err.msg } ] });
+    });
 });
 
 export default route;
