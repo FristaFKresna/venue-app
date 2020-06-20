@@ -10,6 +10,7 @@ import {
   Button,
   Modal
 } from 'react-native';
+import { Rating, Input, AirbnbRating } from 'react-native-elements';
 import { api } from '../../utils/axios';
 import { FlatList, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -17,6 +18,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { COLORS } from '../../utils/colors';
 import NumberFormat from 'react-number-format';
 import { ScrollView } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const VenueDetailsScreen = ({ route, navigation }) => {
   // TODO rapihin style
@@ -58,12 +60,23 @@ const VenueDetailsScreen = ({ route, navigation }) => {
     setDate(date || new Date());
   };
 
+  const onSend = () => {
+    api.post('/users/1/reviews', {
+      venueId: route.params.id,
+      comment,
+      rating
+    });
+    setModalVisible(false);
+    fetchVenue();
+  };
   const [ modalVisible, setModalVisible ] = useState(true);
 
+  const [ comment, setComment ] = useState('');
+  const [ rating, setRating ] = useState(3.5);
   return (
     <View style={{ padding: 20 }}>
       {!loading ? (
-        <View>
+        <ScrollView>
           <Image source={{ uri: venue.imageUrl }} style={{ height: 150 }} />
           <Text style={{ color: COLORS.text, fontSize: 24, fontWeight: 'bold', marginVertical: 10 }}>{venue.name}</Text>
           <Text style={{ color: COLORS.text, fontSize: 18 }}>{venue.address}</Text>
@@ -86,7 +99,15 @@ const VenueDetailsScreen = ({ route, navigation }) => {
             refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchVenue} />}
             renderItem={({ item }) => {
               return (
-                <View style={{ backgroundColor: 'white', padding: 10 }}>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    padding: 10,
+                    elevation: 3,
+                    marginHorizontal: 10,
+                    marginVertical: 5
+                  }}
+                >
                   <Text style={{ fontSize: 18, fontWeight: 'bold', color: COLORS.text, marginVertical: 5 }}>
                     {item.name}
                   </Text>
@@ -119,7 +140,41 @@ const VenueDetailsScreen = ({ route, navigation }) => {
               );
             }}
           />
-        </View>
+
+          {/* review */}
+          <View style={{ marginVertical: 20 }}>
+            {venue.reviews &&
+              venue.reviews.map((review) => {
+                return (
+                  <View key={review.id} style={{ marginVertical: 10 }}>
+                    <View style={{ alignItems: 'flex-start' }}>
+                      <Text style={{ fontSize: 18, fontWeight: 'bold', color: COLORS.text }}>
+                        {review.user.username.toUpperCase()}
+                      </Text>
+                      <Rating
+                        style={{ marginVertical: 5 }}
+                        imageSize={10}
+                        readonly
+                        ratingColor={COLORS.main}
+                        type="custom"
+                        ratingBackgroundColor={COLORS.body}
+                        ratingTextColor={COLORS.main}
+                        startingValue={+review.rating}
+                      />
+                    </View>
+                    <Text style={{ fontSize: 16, fontStyle: 'italic', color: COLORS.text }}>{review.comment}</Text>
+                  </View>
+                );
+              })}
+            <Button
+              color={COLORS.main}
+              title="review"
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            />
+          </View>
+        </ScrollView>
       ) : (
         <ActivityIndicator />
       )}
@@ -128,24 +183,7 @@ const VenueDetailsScreen = ({ route, navigation }) => {
       {datePickerShown && (
         <DateTimePicker mode={'date'} is24Hour={true} display="default" value={date} onChange={onChangeDate} />
       )}
-      <ScrollView>
-        {venue.reviews &&
-          venue.reviews.map((review) => {
-            return (
-              <View key={review.id}>
-                <Text>{review.user.username}</Text>
-                <Text>{review.comment}</Text>
-              </View>
-            );
-          })}
-      </ScrollView>
-      <Button
-        color={COLORS.main}
-        title="review"
-        onPress={() => {
-          setModalVisible(!modalVisible);
-        }}
-      />
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -157,13 +195,29 @@ const VenueDetailsScreen = ({ route, navigation }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TouchableOpacity
-              style={{ padding: 10, backgroundColor: '#2196F3' }}
+              style={{ padding: 10 }}
               onPress={() => {
                 setModalVisible(!modalVisible);
               }}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Icon name="close" size={30} />
             </TouchableOpacity>
+            <AirbnbRating
+              ratingCount={5}
+              defaultRating={rating}
+              imageSize={40}
+              onFinishRating={(rating) => {
+                console.log(rating)
+                setRating(rating);
+              }}
+            />
+            <Input
+              onChangeText={(text) => {
+                setComment(text);
+              }}
+              label="comment"
+            />
+            <Button title="send" onPress={onSend} />
           </View>
         </View>
       </Modal>
@@ -175,9 +229,6 @@ export default VenueDetailsScreen;
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     marginTop: 22
   },
   modalView: {
