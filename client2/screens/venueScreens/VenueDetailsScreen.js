@@ -45,6 +45,7 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   useEffect(fetchVenue, [ date ]);
 
   const onChangeDate = (event, date) => {
+    setLoading(true)
     setDatePickerShown(false);
     setDate(date || new Date());
   };

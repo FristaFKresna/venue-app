@@ -1,25 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, RefreshControl } from 'react-native';
 import { api } from '../../utils/axios';
 import { COLORS } from '../../utils/colors';
 import moment from 'moment';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const OrdersScreen = () => {
-  const [ reservations, setReservations ] = useState([]);
+    const [ reservations, setReservations ] = useState([]);
+    const [ refreshing, setRefresh ] = useState(false);
   useEffect(() => {
-    api.get('/users/1/orders').then(({ data }) => {
-      setReservations(data);
-    });
+    api
+      .get('/users/1/orders')
+      .then(({ data }) => {
+        setReservations(data);
+      })
+      .catch((err) => {
+        alert('terjadi kesalahan');
+      });
   }, []);
+  const handleRefresh = async () => {
+    api
+      .get('/users/1/orders', {date: new Date().getTime()})
+      .then(({ data }) => {
+        setRefresh(false);
+        console.log('inside')
+        console.log(data)
+        setReservations(data);
+      })
+      .catch((err) => {
+        setRefresh(false);
+        alert('terjadi kesalahan');
+      });
+  };
   return (
-    <View>
+    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}>
       {reservations &&
         reservations.map((rsv) => {
           return (
-            <View style={styles.card}>
-              {rsv.dateTimes.map((date) => {
+            <View style={styles.card} key={rsv.order.id}>
+              {rsv.dateTimes.map((date, index) => {
                 return (
-                  <View>
+                  <View key={index}>
                     <Text style={{ fontWeight: 'bold', color: COLORS.text, fontSize: 24 }}>{date.package.name}</Text>
                     <Text style={{ fontSize: 18, color: COLORS.tertiary }}>
                       {moment(date.date).toDate().toDateString()}
@@ -28,6 +49,7 @@ const OrdersScreen = () => {
                 );
               })}
               <Text>INVOICE: {rsv.order.id}</Text>
+              <Text>order date: {new Date(rsv.order.createdAt).toLocaleTimeString()} WIB</Text>
               <Text>amount: {rsv.order.total}</Text>
               <Text>
                 status:{' '}
@@ -47,7 +69,7 @@ const OrdersScreen = () => {
           );
         })}
       <Text>hello world</Text>
-    </View>
+    </ScrollView>
   );
 };
 

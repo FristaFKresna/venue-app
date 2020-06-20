@@ -29,7 +29,16 @@ route.post('/:id/reservations', async (req, res) => {
     // TODO refactor body with desructuring
     const result = await sequelize.transaction(async (t) => {
       const rsv = await Reservation.create({ userId: req.params.id }, { transaction: t });
-      const currentDate = await DateTime.findOne({ where: { date: req.body.date, packageId: req.body.packageId } });
+      const currentDate = await DateTime.findOne({
+        where: { date: req.body.date, packageId: req.body.packageId },
+        include: [
+          {
+            model: Reservation,
+            include: [ { model: Order, where: { [Op.or]: [ { status: 'pending' }, { status: 'success' } ] } } ]
+          }
+        ],
+        transaction: t
+      });
       if (currentDate) throw new Error("can't book the same package at the same time");
       const date = await DateTime.create({ date: req.body.date, packageId: req.body.packageId }, { transaction: t });
       const rsvDate = await ReservedDateTime.create({ reservationId: rsv.id, dateTimeId: date.id }, { transaction: t });
@@ -43,7 +52,13 @@ route.post('/:id/reservations', async (req, res) => {
         new PackagePayment(
           order.total,
           order.id,
-          { bank: req.body.bank, first_name: user.firstName, last_name: user.lastName, email: user.email, expireMin: 1 },
+          {
+            bank: req.body.bank,
+            first_name: user.firstName,
+            last_name: user.lastName,
+            email: user.email,
+            expireMin: 1
+          },
           pkg
         )
       );
