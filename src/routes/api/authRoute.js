@@ -5,7 +5,9 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../../config/keys';
 import bcrypt from 'bcrypt';
 import jwtAuth from '../../middlewares/jwtAuth';
-
+import faker from 'faker';
+import transporter from '../../config/transporter';
+const SMTPConnection = require("nodemailer/lib/smtp-connection");
 const route = Router();
 
 const loginValidates = [
@@ -47,7 +49,9 @@ const registerValidates = [
     return value;
   })
 ];
+
 route.post('/register', registerValidates, async (req, res) => {
+
   // extract error
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -58,24 +62,37 @@ route.post('/register', registerValidates, async (req, res) => {
   try {
     const user = await User.findOne({ where: { email } });
     if (user) throw new Error('user already exists!');
-    // not needed for a while
-    // const salt = await bcrypt.genSalt(10);
-    // const hash = await bcrypt.hash(password, salt);
-    const newUser = await User.create({ email, password: password, username, role });
+    const verifToken = faker.random.number({ min: 1000, max: 9999 });
+    const newUser = await User.create({ email, password: password, username, role, token: verifToken });
     const token = jwt.sign({ user: { id: newUser.id, email: newUser.email } }, JWT_SECRET, {
       expiresIn: '5 days'
     });
     res.send({ token });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({ errors: [ { msg: err.message } ] });
   }
 });
 
 route.post('/deserialize', jwtAuth, (req, res) => {
-  User.findByPk(req.user.id, {attributes: {exclude: ['password']}})
+  User.findByPk(req.user.id, { attributes: { exclude: [ 'password' ] } })
     .then((user) => {
       res.send(user);
     })
     .catch((err) => res.status(400).send({ errors: [ { msg: err.msg } ] }));
 });
+
+route.get('/mail', (req, res) => {
+  const mailopts = {
+    from: 'rikoaxel@gmail.com',
+    to: 'fauzan.habib@outlook.com',
+    subject: 'you\'re georegeous',
+    text: 'hello world',
+    html: '<h1>hello</h1>'
+  }
+  transporter.sendMail(mailopts, (err, info)=> {
+    if(err) return res.send(err)
+    res.send(info)
+  })
+})
 export default route;

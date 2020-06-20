@@ -1,4 +1,4 @@
-import { Sequelize, UUID, STRING } from "sequelize";
+import { Sequelize, UUID, STRING, BOOLEAN, INTEGER, DATE } from "sequelize";
 import sequelize from "../config/db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
@@ -16,6 +16,10 @@ export const User = sequelize.define(
       type: Sequelize.STRING(255),
       allowNull: false,
     },
+    isVerified: {
+      type: BOOLEAN,
+      defaultValue: false
+    },
     username: {
       type: Sequelize.STRING(50),
       allowNull: false,
@@ -25,6 +29,8 @@ export const User = sequelize.define(
       type: Sequelize.ENUM("renter", "rentee", "admin"),
       allowNull: false,
     },
+    token: INTEGER,
+    tokenExpiration: DATE,
     // profile
     address: {
       type: Sequelize.STRING(255),
@@ -54,6 +60,7 @@ User.beforeCreate((user) => {
 });
 
 User.hasMany(Review)
+Review.belongsTo(User)
 User.hasMany(Venue)
 User.hasMany(Reservation)
 
