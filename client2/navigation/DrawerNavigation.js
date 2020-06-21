@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import VenuesNavigator from './VenuesNavigator';
-import TransactionNavigator from './TransactionNavigator';
+import ProfileNavigator from './ProfileNavigator';
 import ReservationNavigator from './ReservationNavigator';
 import OrderNavigator from './OrderNavigator';
 
@@ -14,7 +14,7 @@ export default () => (
       component={VenuesNavigator}
 
     />
-    <Drawer.Screen name="Transaction" component={TransactionNavigator} />
+    <Drawer.Screen name="Profile" component={ProfileNavigator} />
     <Drawer.Screen name="Reservations" component={ReservationNavigator} />
     <Drawer.Screen name='Orders' component={OrderNavigator} />
   </Drawer.Navigator>

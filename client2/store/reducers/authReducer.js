@@ -1,4 +1,4 @@
-import { SET_USER, SET_AUTH_ERROR, CLEAR_AUTH_ERROR, SET_VERIF_ERROR } from '../actions/actionTypes';
+import { SET_USER, SET_AUTH_ERROR, CLEAR_AUTH_ERROR, SET_VERIF_ERROR, SIGN_OUT } from '../actions/actionTypes';
 
 const initialState = {
   id: null,
@@ -36,6 +36,9 @@ export default (state = initialState, action) => {
         ...state,
         errors: []
       }
+    }
+    case SIGN_OUT: {
+      return initialState
     }
     default:
       return state;
