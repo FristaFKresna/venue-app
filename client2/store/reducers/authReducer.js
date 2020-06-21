@@ -1,6 +1,7 @@
 import { SET_USER, SET_AUTH_ERROR, CLEAR_AUTH_ERROR } from '../actions/actionTypes';
 
 const initialState = {
+  id: null,
   username: null,
   token: null,
   isLoading: true,
