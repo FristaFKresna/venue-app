@@ -90,14 +90,14 @@ route.post('/receive_notif', function(req, res) {
     } else if (transactionStatus == 'cancel' || transactionStatus == 'deny' || transactionStatus == 'expire') {
       Order.update({ status: transactionStatus }, { where: { id: transactionStatusObject.order_id } })
         .then((order) => {
-          res.send(order);
+          res.status(200).send(order);
         })
         .catch((err) => {
           Order.update({ status: 'error' }, { where: { id: transactionStatusObject.order_id } });
-          res.send(err);
+          res.status(300).send(err);
         });
     } else if (transactionStatus == 'pending') {
-      // TODO set transaction status on your databaase to 'pending' / waiting payment
+      res.status(200).send('ok')
     } else if (transactionStatus == 'refund') {
       // TODO set transaction status on your databaase to 'refund'
       

@@ -20,7 +20,7 @@ function App(props) {
   return (
     <View style={styles.container}>
       {/* <StatusBar /> */}
-      <NavigationContainer theme={MyTheme}>{auth.username ? <AuthNavigator /> : <DrawerNavigation />}</NavigationContainer>
+      <NavigationContainer theme={MyTheme}>{!auth.username ? <AuthNavigator /> : <DrawerNavigation />}</NavigationContainer>
     </View>
   );
 }

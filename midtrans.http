@@ -33,13 +33,38 @@ Authorization: Basic U0ItTWlkLXNlcnZlci1mdTRKWmlsT1d0eU5xVjVUZDJPaFpSbUQ6Cg==
 Accept: application/json
 
 ###
-POST http://localhost:5000/api/midtrans/check
+POST http://localhost:8080/api/midtrans/check
 Content-Type: application/json
 Authorization: Basic U0ItTWlkLXNlcnZlci1mdTRKWmlsT1d0eU5xVjVUZDJPaFpSbUQ6Cg==
 Accept: application/json
 
 {
-    "transaction_id": "14431466-2735-4050-b1e1-2c15f9031f98"
+    "transaction_id": "8b147102-84b4-4874-8755-728a648343f2"
+}
+
+###
+POST http//localhost:8080/api/midtrans/receive_notif
+
+{
+  "va_numbers": [
+    {
+      "bank": "bca",
+      "va_number": "55676095739"
+    }
+  ],
+  "payment_amounts": [],
+  "transaction_time": "2020-06-20 07:52:24",
+  "gross_amount": "4200000.00",
+  "currency": "IDR",
+  "order_id": "8b147102-84b4-4874-8755-728a648343f2",
+  "payment_type": "bank_transfer",
+  "signature_key": "9da30873e374d5309292cdf00417c9e864dd0efb70c4b8a0977afff5e8a01a5cdbcd4878fa528a82d09197c9b945e505d70bb4d55814c7a6797d53fd4c60b6e9",
+  "status_code": "407",
+  "transaction_id": "ea2d5df0-7b27-4167-9ffd-adaaea1e7d2b",
+  "transaction_status": "expire",
+  "fraud_status": "accept",
+  "status_message": "Success, transaction is found",
+  "merchant_id": "G498255676"
 }
 
 ###

@@ -7,3 +7,5 @@
 - styling login register
 - email verif
 - comment rating
+- sort by
+- filter

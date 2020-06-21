@@ -1,5 +1,5 @@
 import Axios from 'axios';
-export const BASE_URL = 'https://zano-6e7340b4.localhost.run/api';
+export const BASE_URL = 'http://192.168.100.42:5000/api';
 export const api = Axios.create({ baseURL: BASE_URL });
 
 export const setToken = (token) => {
