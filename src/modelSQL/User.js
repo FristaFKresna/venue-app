@@ -3,6 +3,7 @@ import sequelize from "../config/db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import { Venue, Reservation, Review } from "./Venue";
+import moment from "moment";
 
 export const User = sequelize.define(
   "user",
@@ -29,7 +30,7 @@ export const User = sequelize.define(
       type: Sequelize.ENUM("renter", "rentee", "admin"),
       allowNull: false,
     },
-    token: INTEGER,
+    otp: INTEGER,
     tokenExpiration: DATE,
     // profile
     address: {
@@ -52,6 +53,7 @@ User.beforeCreate((user) => {
     .hash(user.password, 10)
     .then((hash) => {
       user.password = hash;
+      user.tokenExpiration = moment().add(30, "seconds").toLocaleString()
       // user.id = uuidv4();
     })
     .catch((err) => {

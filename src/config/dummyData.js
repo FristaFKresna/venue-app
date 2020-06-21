@@ -19,7 +19,7 @@ const users = [
     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/adobi/128.jpg',
     firstName: 'maman',
     isVerified: true,
-    token: 1234,
+    otp: 1234,
     lastName: 'suparman'
   },
   {
@@ -30,8 +30,19 @@ const users = [
     isVerified: true,
     avatar: 'https://source.unsplash.com/128x128/?woman',
     firstName: 'diana',
-    token: 4321,
+    otp: 4321,
     lastName: 'netanyahu'
+  },
+  {
+    username: 'nikochan',
+    password: 'password',
+    email: 'niko@mail.co',
+    role: 'rentee',
+    isVerified: false,
+    avatar: 'https://source.unsplash.com/128x128/?man',
+    firstName: 'nikolas',
+    otp: 4321,
+    lastName: 'saputra'
   }
 ];
 

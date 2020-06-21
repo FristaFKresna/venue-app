@@ -1,10 +1,11 @@
-import { SET_USER, SET_AUTH_ERROR, CLEAR_AUTH_ERROR } from '../actions/actionTypes';
+import { SET_USER, SET_AUTH_ERROR, CLEAR_AUTH_ERROR, SET_VERIF_ERROR } from '../actions/actionTypes';
 
 const initialState = {
   id: null,
   username: null,
   token: null,
   isLoading: true,
+  isVerified: null,
   errors: []
 };
 export default (state = initialState, action) => {
@@ -19,6 +20,13 @@ export default (state = initialState, action) => {
     case SET_AUTH_ERROR: {
       return {
         ...initialState,
+        isLoading: false,
+        errors: [ ...state.errors, ...action.payload ]
+      };
+    }
+    case SET_VERIF_ERROR: {
+      return {
+        ...state,
         isLoading: false,
         errors: [ ...state.errors, ...action.payload ]
       };
