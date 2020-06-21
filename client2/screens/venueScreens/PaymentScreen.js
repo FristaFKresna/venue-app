@@ -18,7 +18,7 @@ const PaymentScreen = ({ route }) => {
   const [ loading, setLoading ] = useState(false);
 
   // TODO add alert on success
-  const onProceedToPay = () => {
+  const onProceedToPay = ({navigation}) => {
     setLoading(true);
     api
       // calculate pricing is serverside for security reason
@@ -27,6 +27,7 @@ const PaymentScreen = ({ route }) => {
         console.log(data);
         setLoading(false);
         alert('success');
+        navigation.navigate('Order')
       })
       .catch((err) => {
         alert(err.response.data.errors[0].msg);

@@ -6,7 +6,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     const { data: { token } } = await api.post('/auth/login', { email, password });
     setToken(token);
     const { data } = await api.post('/auth/deserialize');
-    dispatch({ type: SET_USER, payload: { token, username: data.username } });
+    dispatch({ type: SET_USER, payload: { token, username: data.username, id: data.id } });
   } catch (err) {
     dispatch({ type: SET_AUTH_ERROR, payload: err.response.data.errors });
   }
@@ -17,7 +17,7 @@ export const register = (body) => async (dispatch) => {
     const { data: { token } } = await api.post('/auth/register', body);
     setToken(token);
     const { data } = await api.post('/auth/deserialize');
-    dispatch({ type: SET_USER, payload: { token, username: data.username } });
+    dispatch({ type: SET_USER, payload: { token, username: data.username, id: data.id } });
   } catch (err) {
     dispatch({ type: SET_AUTH_ERROR, payload: err.response.data.errors });
   }
