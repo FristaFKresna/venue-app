@@ -19,6 +19,7 @@ import { COLORS } from '../../utils/colors';
 import NumberFormat from 'react-number-format';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { useSelector } from 'react-redux';
 
 const VenueDetailsScreen = ({ route, navigation }) => {
   // TODO rapihin style
@@ -29,6 +30,8 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   const [ datePickerShown, setDatePickerShown ] = useState(false);
   const [ date, setDate ] = useState(new Date());
   const [ venueAvailableAtDate, setVenueAvailableAtDate ] = useState([]);
+  const userId = useSelector((state) => state.auth.id);
+  console.log(userId)
 
   const onMakeRsv = (pkg) => {
     navigation.navigate('VenuePayment', { package: pkg, date: date.toISOString() });
@@ -61,7 +64,7 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   };
 
   const onSend = () => {
-    api.post('/users/1/reviews', {
+    api.post(`/users/${userId}/reviews`, {
       venueId: route.params.id,
       comment,
       rating
@@ -69,14 +72,14 @@ const VenueDetailsScreen = ({ route, navigation }) => {
     setModalVisible(false);
     fetchVenue();
   };
-  const [ modalVisible, setModalVisible ] = useState(true);
+  const [ modalVisible, setModalVisible ] = useState(false);
 
   const [ comment, setComment ] = useState('');
   const [ rating, setRating ] = useState(3.5);
   return (
     <View style={{ padding: 20 }}>
       {!loading ? (
-        <ScrollView>
+        <ScrollView refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchVenue} />}>
           <Image source={{ uri: venue.imageUrl }} style={{ height: 150 }} />
           <Text style={{ color: COLORS.text, fontSize: 24, fontWeight: 'bold', marginVertical: 10 }}>{venue.name}</Text>
           <Text style={{ color: COLORS.text, fontSize: 18 }}>{venue.address}</Text>
@@ -96,7 +99,6 @@ const VenueDetailsScreen = ({ route, navigation }) => {
             horizontal
             data={venue.packages}
             keyExtractor={(item) => (item.id ? item.id.toString() : null)}
-            refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchVenue} />}
             renderItem={({ item }) => {
               return (
                 <View
@@ -181,7 +183,7 @@ const VenueDetailsScreen = ({ route, navigation }) => {
 
       {/* showing available packages */}
       {datePickerShown && (
-        <DateTimePicker mode={'date'} is24Hour={true} display="default" value={date} onChange={onChangeDate} />
+        <DateTimePicker style={{backgroundColor: COLORS.tertiary}} mode={'date'} is24Hour={true} display="default" value={date} onChange={onChangeDate} />
       )}
 
       <Modal
@@ -207,7 +209,7 @@ const VenueDetailsScreen = ({ route, navigation }) => {
               defaultRating={rating}
               imageSize={40}
               onFinishRating={(rating) => {
-                console.log(rating)
+                console.log(rating);
                 setRating(rating);
               }}
             />
