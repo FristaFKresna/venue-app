@@ -11,7 +11,7 @@ import {
   FlatList,
   TouchableOpacity
 } from 'react-native';
-import { Rating } from 'react-native-elements';
+import { Rating, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadVenues, dummyVenues } from '../../store/actions/venueActions';
 import venueReducer from '../../store/reducers/venueReducer';
@@ -51,6 +51,7 @@ const VenuesScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Text style={{ fontWeight: 'bold', fontSize: 24, color: COLORS.text }}>Venue in all cities, all countries</Text>
+      <Input onEndEditing={() => {console.log('end edit called')}} rightIcon={{type: 'font-awesome', name: 'search', color: COLORS.body}} />
       <View style={{ flexDirection: 'row' }}>
         <BreadCrumbs
           title="filter"

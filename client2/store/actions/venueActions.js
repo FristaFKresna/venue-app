@@ -2,14 +2,11 @@ import { SET_VENUES, FETCH_VENUES, SET_VENUES_ERROR } from './actionTypes';
 import { api } from '../../utils/axios';
 
 export const loadVenues = (options) => async (dispatch) => {
-  let q = '/venues'
-
-  if(options && options.city != null) {
-    q = `/venues?city=${options.city}`
-  }
   dispatch({ type: FETCH_VENUES });
   try {
-    const { data } = await api.get(q);
+    const { data } = await api.get('/venues', {
+      params: options && { city: options.city }
+    });
     dispatch({ type: SET_VENUES, payload: data });
   } catch (err) {
     dispatch({ type: SET_VENUES_ERROR, payload: err.response.data.errors });
