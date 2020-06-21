@@ -27,6 +27,12 @@ route.get('/', (req, res) => {
     });
 });
 
+route.get('/cities', (req, res) => {
+  Venue.findAll({ group: 'city', attributes: [ 'city' ] })
+    .then((venues) => res.send(venues.map(venue => venue.city)))
+    .catch((err) => res.send({errors: [{msg: err.msg}]}));
+});
+
 route.get('/:id', (req, res) => {
   Venue.findByPk(req.params.id, { include: [ { model: Package }, { model: Review, include: [ { model: User } ] } ] })
     .then((venue) => {
@@ -79,4 +85,5 @@ route.get('/:id/available', async (req, res) => {
     res.status(500).send({ errors: [ { msg: err.message } ] });
   }
 });
+
 export default route;
