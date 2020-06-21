@@ -3,7 +3,7 @@ POST http://localhost:{{$dotenv PORT}}/api/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "email": "maman@mail.co",
+    "email": "niko@mail.co",
     "password": "password"
 }
 
@@ -87,3 +87,17 @@ Authorization: Bearer diacakacak.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Im1hbWFuQG1haWw
 
 ###
 GET http://localhost:{{$dotenv PORT}}/api/auth/mail
+
+###
+POST http://localhost:{{$dotenv PORT}}/api/auth/verify
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6Im5pa29AbWFpbC5jbyIsInVzZXJuYW1lIjoibmlrb2NoYW4ifSwiaWF0IjoxNTkyNzI5OTg5LCJleHAiOjE1OTMxNjE5ODl9.y90tqjgHzxddITNTmtWi0GpLUEPAfXG7-C-B7aaojKs
+
+{
+    "otp" : 8754
+}
+
+###
+POST http://localhost:{{$dotenv PORT}}/api/auth/resend
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6Im5pa29AbWFpbC5jbyIsInVzZXJuYW1lIjoibmlrb2NoYW4ifSwiaWF0IjoxNTkyNzI5OTg5LCJleHAiOjE1OTMxNjE5ODl9.y90tqjgHzxddITNTmtWi0GpLUEPAfXG7-C-B7aaojKs
