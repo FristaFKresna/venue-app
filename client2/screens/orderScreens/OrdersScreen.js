@@ -5,10 +5,12 @@ import { COLORS } from '../../utils/colors';
 import moment from 'moment';
 import { ScrollView } from 'react-native-gesture-handler';
 import LoadingScreen from '../LoadingScreen'
+import { useSelector } from 'react-redux';
 
 const OrdersScreen = () => {
     const [ reservations, setReservations ] = useState([]);
     const [ refreshing, setRefresh ] = useState(false);
+    const userId = useSelector(state => state.auth.id)
   useEffect(() => {
     api
       .get('/users/1/orders')
@@ -21,7 +23,7 @@ const OrdersScreen = () => {
   }, []);
   const handleRefresh = async () => {
     api
-      .get('/users/1/orders', {date: new Date().getTime()})
+      .get(`/users/${userId}/orders`, {date: new Date().getTime()})
       .then(({ data }) => {
         setRefresh(false);
         console.log('inside')

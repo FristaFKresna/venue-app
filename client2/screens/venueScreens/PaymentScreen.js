@@ -10,7 +10,7 @@ import { Picker } from '@react-native-community/picker';
 import { useSelector } from 'react-redux';
 import LoadingScreen from '../LoadingScreen';
 
-const PaymentScreen = ({ route }) => {
+const PaymentScreen = ({ route, navigation }) => {
   const [ numPeople, setNumPeople ] = useState('0');
   const [ bank, setBank ] = useState('bca');
   const { package: { name, pricePerPax, id, description }, date } = route.params;
@@ -18,11 +18,11 @@ const PaymentScreen = ({ route }) => {
   const [ loading, setLoading ] = useState(false);
 
   // TODO add alert on success
-  const onProceedToPay = ({navigation}) => {
+  const onProceedToPay = () => {
     setLoading(true);
     api
       // calculate pricing is serverside for security reason
-      .post(`/users/${userId || 1}/reservations`, { date, packageId: id, numPeople, bank })
+      .post(`/users/${userId}/reservations`, { date, packageId: id, numPeople, bank })
       .then(({ data }) => {
         console.log(data);
         setLoading(false);
@@ -30,7 +30,8 @@ const PaymentScreen = ({ route }) => {
         navigation.navigate('Order')
       })
       .catch((err) => {
-        alert(err.response.data.errors[0].msg);
+        console.log(err)
+        alert('there\'s an error');
         setLoading(false);
       });
   };
