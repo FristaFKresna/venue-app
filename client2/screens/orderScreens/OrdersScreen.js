@@ -4,6 +4,7 @@ import { api } from '../../utils/axios';
 import { COLORS } from '../../utils/colors';
 import moment from 'moment';
 import { ScrollView } from 'react-native-gesture-handler';
+import LoadingScreen from '../LoadingScreen'
 
 const OrdersScreen = () => {
     const [ reservations, setReservations ] = useState([]);
@@ -34,7 +35,7 @@ const OrdersScreen = () => {
   };
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}>
-      {reservations &&
+      {reservations && reservations.length > 0 ?
         reservations.map((rsv) => {
           return (
             <View style={styles.card} key={rsv.order.id}>
@@ -67,8 +68,7 @@ const OrdersScreen = () => {
               {rsv.order.status === 'pending' ? <Text>please continue payment to {rsv.order.va_number}</Text> : null}
             </View>
           );
-        })}
-      <Text>hello world</Text>
+        }): <LoadingScreen text='No orders yet' />}
     </ScrollView>
   );
 };
