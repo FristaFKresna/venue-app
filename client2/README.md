@@ -9,3 +9,4 @@
 - comment rating
 - sort by
 - filter
+- forgot password

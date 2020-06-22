@@ -27,7 +27,7 @@ const PaymentScreen = ({ route, navigation }) => {
         console.log(data);
         setLoading(false);
         alert('success');
-        navigation.navigate('Order')
+        navigation.navigate('Orders')
       })
       .catch((err) => {
         console.log(err)
