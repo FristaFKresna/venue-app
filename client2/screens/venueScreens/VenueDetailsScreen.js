@@ -31,31 +31,33 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   const [ date, setDate ] = useState(new Date());
   const [ venueAvailableAtDate, setVenueAvailableAtDate ] = useState([]);
   const userId = useSelector((state) => state.auth.id);
-  console.log(userId)
-
-  const onMakeRsv = (pkg) => {
-    navigation.navigate('VenuePayment', { package: pkg, date: date.toISOString() });
-  };
+  console.log(userId);
 
   const fetchVenue = () => {
+    setLoading(true);
     api
       .get('/venues/' + route.params.id)
       .then(({ data }) => {
         setVenue(data);
-        setLoading(false);
         return api.get('/venues/' + route.params.id + '/available', {
           params: { date }
         });
       })
       .then(({ data }) => {
         setVenueAvailableAtDate(data.map((elem) => elem.id));
+        setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
 
   useEffect(fetchVenue, [ date ]);
+
+  const onMakeRsv = (pkg) => {
+    navigation.navigate('VenuePayment', { package: pkg, date: date.toISOString() });
+  };
 
   const onChangeDate = (event, date) => {
     setLoading(true);
@@ -64,13 +66,20 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   };
 
   const onSend = () => {
-    api.post(`/users/${userId}/reviews`, {
-      venueId: route.params.id,
-      comment,
-      rating
-    });
+    setLoading(true);
+    api
+      .post(`/users/${userId}/reviews`, {
+        venueId: route.params.id,
+        comment,
+        rating
+      })
+      .then(() => {
+        fetchVenue();
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
     setModalVisible(false);
-    fetchVenue();
   };
   const [ modalVisible, setModalVisible ] = useState(false);
 
@@ -183,7 +192,14 @@ const VenueDetailsScreen = ({ route, navigation }) => {
 
       {/* showing available packages */}
       {datePickerShown && (
-        <DateTimePicker style={{backgroundColor: COLORS.tertiary}} mode={'date'} is24Hour={true} display="default" value={date} onChange={onChangeDate} />
+        <DateTimePicker
+          style={{ backgroundColor: COLORS.tertiary }}
+          mode={'date'}
+          is24Hour={true}
+          display="default"
+          value={date}
+          onChange={onChangeDate}
+        />
       )}
 
       <Modal

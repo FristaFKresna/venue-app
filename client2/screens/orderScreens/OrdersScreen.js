@@ -1,43 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, RefreshControl } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { StyleSheet, Text, View, RefreshControl, ActivityIndicator } from 'react-native';
 import { api } from '../../utils/axios';
 import { COLORS } from '../../utils/colors';
 import moment from 'moment';
 import { ScrollView } from 'react-native-gesture-handler';
-import LoadingScreen from '../LoadingScreen'
+import LoadingScreen from '../LoadingScreen';
 import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 const OrdersScreen = () => {
-    const [ reservations, setReservations ] = useState([]);
-    const [ refreshing, setRefresh ] = useState(false);
-    const userId = useSelector(state => state.auth.id)
-  useEffect(() => {
-    api
-      .get('/users/1/orders')
-      .then(({ data }) => {
-        setReservations(data);
-      })
-      .catch((err) => {
-        alert('terjadi kesalahan');
-      });
-  }, []);
+  const [ reservations, setReservations ] = useState([]);
+  const [ refreshing, setRefresh ] = useState(false);
+  const [loading, setLoading] = useState(true)
+  const userId = useSelector((state) => state.auth.id);
+
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true)
+      api
+        .get(`/users/${userId}/orders`)
+        .then(({ data }) => {
+          setReservations(data);
+          setLoading(false)
+        })
+        .catch((err) => {
+          alert('terjadi kesalahan');
+        });
+    }, [])
+  );
+  
   const handleRefresh = async () => {
     api
-      .get(`/users/${userId}/orders`, {date: new Date().getTime()})
+      .get(`/users/${userId}/orders`, { date: new Date().getTime() })
       .then(({ data }) => {
         setRefresh(false);
-        console.log('inside')
-        console.log(data)
+        setLoading(false)
+        console.log('inside');
+        console.log(data);
         setReservations(data);
       })
       .catch((err) => {
         setRefresh(false);
+        setLoading(false)
         alert('terjadi kesalahan');
       });
   };
-  return (
+  return ( !loading ?
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}>
-      {reservations && reservations.length > 0 ?
+      {reservations && reservations.length > 0 ? (
         reservations.map((rsv) => {
           return (
             <View style={styles.card} key={rsv.order.id}>
@@ -61,7 +71,7 @@ const OrdersScreen = () => {
                     fontSize: 18,
                     backgroundColor: COLORS.secondary,
                     borderRadius: 24,
-                    color: rsv.order.status === 'pending' ? COLORS.tertiary : 'cancelled' ? 'red' : COLORS.main
+                    color: rsv.order.status === 'success' ? 'green' : 'red'
                   }}
                 >
                   {rsv.order.status}
@@ -70,9 +80,12 @@ const OrdersScreen = () => {
               {rsv.order.status === 'pending' ? <Text>please continue payment to {rsv.order.va_number}</Text> : null}
             </View>
           );
-        }): <LoadingScreen text='No orders yet' />}
+        })
+      ) : (
+        <LoadingScreen text="No orders yet" />
+      )}
     </ScrollView>
-  );
+  : <ActivityIndicator />);
 };
 
 export default OrdersScreen;

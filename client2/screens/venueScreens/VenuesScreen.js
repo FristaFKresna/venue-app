@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   StyleSheet,
   Text,
@@ -21,18 +21,23 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { Picker } from '@react-native-community/picker';
 import { api } from '../../utils/axios';
 import VenueCard from '../../components/VenueCard';
+import { useFocusEffect } from '@react-navigation/native';
 
 const VenuesScreen = ({ navigation, route }) => {
   const { venues, isLoading } = useSelector((state) => state.venue);
   const [ cities, setCities ] = useState([]);
+  const [ modalVisible, setModalVisible ] = useState(false);
+  const [ city, setCity ] = useState(null);
   console.log(venues);
   const dispatch = useDispatch();
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(loadVenues());
-    }, 3);
-  }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(loadVenues());
+    }, [])
+  );
+
+  // get cities for filtering options
   useEffect(() => {
     api
       .get('/venues/cities')
@@ -44,11 +49,8 @@ const VenuesScreen = ({ navigation, route }) => {
       });
   }, []);
 
-  const [ modalVisible, setModalVisible ] = useState(false);
-  const [ city, setCity ] = useState(null);
-
   const onFilter = () => {
-    dispatch(loadVenues({ city: city }));
+    dispatch(loadVenues({ city }));
     setModalVisible(false);
   };
 
@@ -123,15 +125,13 @@ const VenuesScreen = ({ navigation, route }) => {
             >
               <Icon name="close" size={30} />
             </TouchableOpacity>
-              <Filter />
+            <Filter />
           </View>
         </View>
       </Modal>
     </View>
   );
 };
-
-
 
 export default VenuesScreen;
 

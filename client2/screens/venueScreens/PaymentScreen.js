@@ -9,6 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Picker } from '@react-native-community/picker';
 import { useSelector } from 'react-redux';
 import LoadingScreen from '../LoadingScreen';
+import { CommonActions } from '@react-navigation/native';
 
 const PaymentScreen = ({ route, navigation }) => {
   const [ numPeople, setNumPeople ] = useState('0');
@@ -27,11 +28,20 @@ const PaymentScreen = ({ route, navigation }) => {
         console.log(data);
         setLoading(false);
         alert('success');
-        navigation.navigate('Orders')
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'Orders'
+              }
+            ]
+          })
+        );
       })
       .catch((err) => {
-        console.log(err)
-        alert('there\'s an error');
+        console.log(err);
+        alert("there's an error");
         setLoading(false);
       });
   };
@@ -88,7 +98,7 @@ const PaymentScreen = ({ route, navigation }) => {
       <Button title="pay" onPress={onProceedToPay} color={COLORS.main} />
     </ScrollView>
   ) : (
-    <LoadingScreen text={'conducting transaction..'}/>
+    <LoadingScreen text={'conducting transaction..'} />
   );
 };
 
