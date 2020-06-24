@@ -6,4 +6,5 @@ export const COLORS = {
     body: "#848484",
     text: '#555555',
     disabled: '#EEEEED',
+    danger: 'red',
 }

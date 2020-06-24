@@ -89,6 +89,18 @@ export const venues = [
     imageUrl: `https://london.bridestory.com/images/c_fill,dpr_2.0,f_auto,fl_progressive,pg_1,q_80,w_680/v1/assets/WEDDING_4_yayotg/sheraton-grand-jakarta-gandaria-city-hotel_sheraton-grand-gandaria-city-grand-ballroom_1.jpg`,
     rating: 4.5,
     userId: 1
+  },
+  {
+    name: 'The papandayan',
+    address: 'The Papandayan Hotel - Jl. Gatot Subroto 83, Bandung. Jawa Barat - Indonesia 40262',
+    city: 'bandung',
+    location: {
+      type: 'Point',
+      coordinates: [ -6.9230042, 107.6237907 ]
+    },
+    imageUrl: `https://london.bridestory.com/images/c_fill,dpr_2.0,f_auto,fl_progressive,pg_1,q_80,w_680/v1/assets/chappel-BkRQNkgMU/papandayan_hb-grill-garden_2.jpg`,
+    rating: 4.5,
+    userId: 1
   }
 ];
 // for (let i = 0; i < 5; i++) {
@@ -169,7 +181,37 @@ Time Slot: 2 pm - 12 midnight
 * Signature food stalls from our chef
   `,
     venueId: 2
-  }
+  },
+  {
+    name: 'CLASSIC WEDDING PACKAGE',
+    slotTimeStarts: '07:00',
+    slotTimeEnds: '24:00',
+    pricePerPax: 195000,
+    description: `### This Package inclusive of:
+* lorem Id nisi velit nisi nisi incididunt.
+* Lorem culpa do id exercitation exercitation in officia nisi dolor minim veniam culpa velit eu.
+* Elit eu officia nulla dolor duis pariatur irure Lorem veniam labore.
+* Aute ullamco elit officia incididunt consectetur.
+* Irure amet cillum elit incididunt amet dolor sunt velit aute ex labore.
+* Magna ad do consequat ea tempor.
+* Signature food stalls from our chef
+  `,
+    venueId: 3
+  },
+  {
+    name: 'HURUBATU WEDDING PACKAGE',
+    slotTimeStarts: '07:00',
+    slotTimeEnds: '24:00',
+    pricePerPax: 442300,
+    description: `### includes:
+* 2 (two) kinds of appetizer selections (for 50% equal to minimum guaranteed)
+* 1 (one) kind of soup (for 50% equal to minimum guaranteed)
+* 6 (six) kinds of main dishes (chicken, fish, beef, vegetables, noodles & steamed rice)
+* 2 (two) kinds of dessert
+* 1 (one) kind of food stall (for 30% equal to minimum guaranteed)
+  `,
+    venueId: 3
+  },
 ];
 
 // for (let i = 0; i < 4; i++) {

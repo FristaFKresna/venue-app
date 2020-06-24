@@ -65,6 +65,14 @@ const VenueDetailsScreen = ({ route, navigation }) => {
     setDate(date || new Date());
   };
 
+  const onAddToWishlist = () => {
+    api.post(`/users/${userId}/wishlist/venues`, {venueId: route.params.id})
+    .then(() => {
+      alert('succesfully added to wishlist')
+    }).catch(err => {
+      alert('there\'s an error, or already added to wishlist')
+    })
+  }
   const onSend = () => {
     api
       .post(`/users/${userId}/reviews`, {
@@ -90,6 +98,21 @@ const VenueDetailsScreen = ({ route, navigation }) => {
           <Image source={{ uri: venue.imageUrl }} style={{ height: 150 }} />
           <Text style={{ color: COLORS.text, fontSize: 24, fontWeight: 'bold', marginVertical: 10 }}>{venue.name}</Text>
           <Text style={{ color: COLORS.text, fontSize: 18 }}>{venue.address}</Text>
+          <TouchableOpacity
+            onPress={onAddToWishlist}
+            style={{
+              paddingVertical: 5,
+              paddingHorizontal: 10,
+              backgroundColor: COLORS.tertiary,
+              alignSelf: 'flex-end',
+              flexDirection: 'row',
+              alignContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={{ fontSize: 18, marginHorizontal: 10, color: 'white' }}>add to wishlist</Text>
+            <Icon name="heart" size={24} color="white" />
+          </TouchableOpacity>
           <View style={{ flexDirection: 'row', marginVertical: 30 }}>
             <AntDesign name="calendar" color={COLORS.body} size={60} />
             <View>
@@ -144,7 +167,12 @@ const VenueDetailsScreen = ({ route, navigation }) => {
                       {venueAvailableAtDate.includes(item.id) ? 'available' : 'booked'}
                     </Text>
                   </Text>
-                  <Button disabled={!venueAvailableAtDate.includes(item.id)} onPress={() => onMakeRsv(item)} title="make rsv" color={COLORS.main} />
+                  <Button
+                    disabled={!venueAvailableAtDate.includes(item.id)}
+                    onPress={() => onMakeRsv(item)}
+                    title="make rsv"
+                    color={COLORS.main}
+                  />
                 </View>
               );
             }}
