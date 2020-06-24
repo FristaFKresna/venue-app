@@ -1,6 +1,16 @@
 import { Router, raw } from 'express';
 import User from '../../modelSQL/User';
-import { Venue, Reservation, Package, DateTime, ReservedDateTime, Order, Review } from '../../modelSQL/Venue';
+import {
+  Venue,
+  Reservation,
+  Package,
+  DateTime,
+  ReservedDateTime,
+  Order,
+  Review,
+  Wishlist,
+  wishlistVenue
+} from '../../modelSQL/Venue';
 import sequelize from '../../config/db';
 import { Op } from 'sequelize';
 import core from '../../config/midtrans';
@@ -18,7 +28,7 @@ route.get('/:id', (req, res) => {
 route.get('/:id/reservations', async (req, res) => {
   const reservations = await Reservation.findAll({
     where: { userId: req.params.id },
-    include: [ { model: DateTime, include: [ { model: Package } ] }, {model: Order, where: {status: 'success'}} ]
+    include: [ { model: DateTime, include: [ { model: Package } ] }, { model: Order, where: { status: 'success' } } ]
   });
   res.send(reservations);
 });
@@ -93,7 +103,7 @@ route.get('/:id/orders', (req, res) => {
 // make comments
 route.post('/:id/reviews', (req, res) => {
   const { rating, comment, venueId } = req.body;
-  console.log(req.body)
+  console.log(req.body);
   Review.create({ rating: rating, comment: comment, userId: req.params.id, venueId: venueId })
     .then((review) => {
       res.send(review.toJSON());
@@ -103,4 +113,41 @@ route.post('/:id/reviews', (req, res) => {
     });
 });
 
+route.get('/:id/wishlist', (req, res) => {
+  Wishlist.findOne({ where: { UserId: req.params.id }, include: Venue })
+    .then((wish) => {
+      res.send(wish);
+    })
+    .catch((err) => {
+      res.status(500).send({ errors: [ { msg: err.message } ] });
+    });
+});
+
+route.post('/:id/wishlist/venues', async (req, res) => {
+  try {
+    let wish = await Wishlist.findOne({ where: { userId: req.params.id } });
+    if (!wish) {
+      wish = await Wishlist.create({ userId: req.params.id });
+    }
+
+    const result = await wishlistVenue.create({
+      userId: req.params.id,
+      wishlistId: wish.id,
+      venueId: req.body.venueId
+    });
+    res.send(result.toJSON());
+  } catch (err) {
+    res.status(400).send({ errors: [ { msg: err.message } ] });
+  }
+});
+
+route.delete('/:id/wishlist/venues/:venueId', async (req, res) => {
+  try {
+    const wish = await Wishlist.findOne({ where: { userId: req.params.id } });
+    const destroyed = await wishlistVenue.destroy({ where: [ { wishlistId: wish.id, venueId: req.params.venueId } ] });
+    res.send(destroyed.toString())
+  } catch (err) {
+    res.status(400).send({ errors: [ { msg: err.message } ] });
+  }
+});
 export default route;

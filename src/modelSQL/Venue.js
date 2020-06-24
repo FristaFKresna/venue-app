@@ -1,6 +1,7 @@
 import sequelize from '../config/db';
 import { INTEGER, STRING, GEOMETRY, DATE, TIME, DATEONLY, Sequelize, DECIMAL, UUID, BIGINT, TEXT } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
+import User from './User'
 
 export const Venue = sequelize.define('venue', {
   id: {
@@ -69,6 +70,12 @@ export const Order = sequelize.define(
   },
   { timestamps: true }
 );
+
+export const Wishlist = sequelize.define('wishlist')
+export const wishlistVenue = sequelize.define('wishlistVenue')
+
+Wishlist.belongsToMany(Venue, {through: wishlistVenue})
+Venue.belongsToMany(Wishlist, {through: wishlistVenue})
 
 Order.beforeCreate((order) => {
   order.id = uuidv4();

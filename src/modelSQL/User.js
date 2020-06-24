@@ -2,7 +2,7 @@ import { Sequelize, UUID, STRING, BOOLEAN, INTEGER, DATE } from "sequelize";
 import sequelize from "../config/db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-import { Venue, Reservation, Review } from "./Venue";
+import { Venue, Reservation, Review, Wishlist } from "./Venue";
 import moment from "moment";
 
 export const User = sequelize.define(
@@ -61,9 +61,15 @@ User.beforeCreate((user) => {
     });
 });
 
+User.afterCreate((user) => {
+  Wishlist.create({userId: user.id})
+})
+
 User.hasMany(Review)
 Review.belongsTo(User)
+Wishlist.belongsTo(User)
 User.hasMany(Venue)
+User.hasOne(Wishlist)
 User.hasMany(Reservation)
 
 export default User

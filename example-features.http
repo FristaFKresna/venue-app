@@ -25,18 +25,18 @@ GET http://localhost:{{$dotenv PORT}}/api/venues/2/available
 GET http://localhost:{{$dotenv PORT}}/api/users/1/reservations HTTP/1.1
 
 ### bikin reservasi, asumsi sekali request udah bayar
-POST http://localhost:{{$dotenv PORT}}/api/users/1/reservations
+POST http://zano-6da263be.localhost.run/api/users/1/reservations
 content-type: application/json
 
 {
-    "date": "2020-06-19T14:07:50.000Z",
+    "date": "2020-06-16T14:07:50.000Z",
     "packageId": 3,
-    "numPeople": 2,
+    "numPeople": 100,
     "bank": "bni"
 }
 
 ### cek daftar reservasi user(column belum dirapihin)
-GET http://localhost:{{$dotenv PORT}}/api/users/1/orders HTTP/1.1
+GET http://localhost:{{$dotenv PORT}}/api/users/4/orders HTTP/1.1
 
 ### commenting
 POST http://localhost:{{$dotenv PORT}}/api/users/1/reviews
@@ -47,3 +47,17 @@ content-type: application/json
     "comment": "lol pls",
     "rating": 3
 }
+
+### wislists
+GET http://localhost:{{$dotenv PORT}}/api/users/1/wishlist HTTP/1.1
+
+###
+POST http://localhost:{{$dotenv PORT}}/api/users/1/wishlist/venues
+content-type: application/json
+
+{
+    "venueId": 2
+}
+
+###
+DELETE http://localhost:{{$dotenv PORT}}/api/users/1/wishlist/venues/1
