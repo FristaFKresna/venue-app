@@ -13,12 +13,12 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-export const sendVerificationEmail = (token) => transporter.sendMail({
-    from: 'rikoaxel@gmail.com',
-    to: 'fauzan.habib@outlook.com',
-    subject: "you're georegeous",
+export const sendVerificationEmail = (token, receiver) => transporter.sendMail({
+    from: 'noreply@venue-app.com',
+    to: receiver,
+    subject: "verification mail",
     text: 'hello ',
-    html: `<h1>hello, this is your${token}</h1>`
+    html: `<h1>hello, this is your verification ${token}</h1>`
   });
 
 export default transporter;

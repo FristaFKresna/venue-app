@@ -113,7 +113,7 @@ export const login = async (req, res) => {
       user.tokenExpiration = moment().add(1, 'minutes')
       await user.save();
       // use mobile connection bcs indiehome blocks email out
-      // await sendVerificationEmail(newOtp)
+      // await sendVerificationEmail(newOtp, user.email)
       res.send(user.toJSON())
     } catch (err) {
       res.status(400).send({ errors: [ { msg: err.message } ] });
