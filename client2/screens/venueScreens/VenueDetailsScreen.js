@@ -66,7 +66,6 @@ const VenueDetailsScreen = ({ route, navigation }) => {
   };
 
   const onSend = () => {
-    setLoading(true);
     api
       .post(`/users/${userId}/reviews`, {
         venueId: route.params.id,
@@ -82,7 +81,6 @@ const VenueDetailsScreen = ({ route, navigation }) => {
     setModalVisible(false);
   };
   const [ modalVisible, setModalVisible ] = useState(false);
-
   const [ comment, setComment ] = useState('');
   const [ rating, setRating ] = useState(3.5);
   return (
@@ -146,7 +144,7 @@ const VenueDetailsScreen = ({ route, navigation }) => {
                       {venueAvailableAtDate.includes(item.id) ? 'available' : 'booked'}
                     </Text>
                   </Text>
-                  <Button onPress={() => onMakeRsv(item)} title="make rsv" color={COLORS.main} />
+                  <Button disabled={!venueAvailableAtDate.includes(item.id)} onPress={() => onMakeRsv(item)} title="make rsv" color={COLORS.main} />
                 </View>
               );
             }}
