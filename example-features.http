@@ -1,31 +1,41 @@
 
+# @hostname = 68.183.183.98
+@hostname = localhost
+@port = 8080
+@host = {{hostname}}:{{port}}
+
 ### user query venues
-GET http://localhost:{{$dotenv PORT}}/api/venues
-?city=jakarta
+GET http://{{host}}/api/venues
+?sortBy=rating
+
+### user query venues
+GET http://{{host}}/api/venues
+?sortBy=price
+
 ### go to venue details
-GET http://localhost:{{$dotenv PORT}}/api/venues/1 HTTP/1.1
+GET http://{{host}}/api/venues/1 HTTP/1.1
 
 ### venue has packages
-GET http://localhost:{{$dotenv PORT}}/api/venues/1/packages HTTP/1.1
+GET http://{{host}}/api/venues/1/packages HTTP/1.1
 
 ### user query venues
-GET http://localhost:{{$dotenv PORT}}/api/venues/cities
+GET http://{{host}}/api/venues/cities
 
 ### user detail (bonus: ada venue dianya juga)
-GET http://localhost:{{$dotenv PORT}}/api/users/4 HTTP/1.1
+GET http://{{host}}/api/users/4 HTTP/1.1
 
 ### detail paket
-GET http://localhost:{{$dotenv PORT}}/api/packages/2 HTTP/1.1
+GET http://{{host}}/api/packages/2 HTTP/1.1
 
 ### cek packages yang tersedia pada venue tersebut
-GET http://localhost:{{$dotenv PORT}}/api/venues/2/available
+GET http://{{host}}/api/venues/2/available
 ?date=2020-06-19T00:00:00.000Z
 
 ### cek daftar reservasi user(column belum dirapihin)
-GET http://localhost:{{$dotenv PORT}}/api/users/1/reservations HTTP/1.1
+GET http://{{host}}/api/users/3/reservations HTTP/1.1
 
 ### bikin reservasi, asumsi sekali request udah bayar
-POST http://zano-6da263be.localhost.run/api/users/1/reservations
+POST http://{{host}}/api/users/3/reservations
 content-type: application/json
 
 {
@@ -36,23 +46,23 @@ content-type: application/json
 }
 
 ### cek daftar reservasi user(column belum dirapihin)
-GET http://localhost:{{$dotenv PORT}}/api/users/4/orders HTTP/1.1
+GET http://{{host}}/api/users/3/orders HTTP/1.1
 
 ### commenting
-POST http://localhost:{{$dotenv PORT}}/api/users/1/reviews
+POST http://{{host}}/api/users/1/reviews
 content-type: application/json
 
 {
-    "venueId": 1,
+    "venueId": 3,
     "comment": "lol pls",
     "rating": 3
 }
 
 ### wislists
-GET http://localhost:{{$dotenv PORT}}/api/users/1/wishlist HTTP/1.1
+GET http://{{host}}/api/users/1/wishlist HTTP/1.1
 
 ###
-POST http://localhost:{{$dotenv PORT}}/api/users/1/wishlist/venues
+POST http://{{host}}/api/users/1/wishlist/venues
 content-type: application/json
 
 {
@@ -60,4 +70,4 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:{{$dotenv PORT}}/api/users/1/wishlist/venues/1
+DELETE http://{{host}}/api/users/1/wishlist/venues/1

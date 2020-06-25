@@ -1,5 +1,9 @@
+@hostname = 68.183.183.98
+@port = 5000
+@host = {{hostname}}:{{port}}
+
 ###  200 user ada, semua valid => dapet token
-POST http://localhost:{{$dotenv PORT}}/api/auth/login HTTP/1.1
+POST http://{{host}}/api/auth/login HTTP/1.1
 content-type: application/json
 
 {
@@ -8,7 +12,7 @@ content-type: application/json
 }
 
 ### 500 valid tapi user gaada
-POST http://localhost:{{$dotenv PORT}}/api/auth/login HTTP/1.1
+POST http://{{host}}/api/auth/login HTTP/1.1
 content-type: application/json
 
 {
@@ -17,16 +21,16 @@ content-type: application/json
 }
 
 ### 400 salah banyak
-POST http://localhost:{{$dotenv PORT}}/api/auth/login HTTP/1.1
+POST http://{{host}}/api/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "email": "test@mail.com",
-    "password": "fdafdsfaf"
+    "email": "testmail.com",
+    "password": "123"
 }
 
 ### 400 pass don't match 
-POST http://localhost:{{$dotenv PORT}}/api/auth/register HTTP/1.1
+POST http://{{host}}/api/auth/register HTTP/1.1
 content-type: application/json
 
 {
@@ -36,7 +40,7 @@ content-type: application/json
 }
 
 ### 400 user exists
-POST http://localhost:{{$dotenv PORT}}/api/auth/register HTTP/1.1
+POST http://{{host}}/api/auth/register HTTP/1.1
 content-type: application/json
 
 {
@@ -44,8 +48,9 @@ content-type: application/json
     "password": "password",
     "re_password": "password"
 }
+
 ### not null viloation
-POST http://localhost:{{$dotenv PORT}}/api/auth/register HTTP/1.1
+POST http://{{host}}/api/auth/register HTTP/1.1
 content-type: application/json
 
 {
@@ -55,19 +60,19 @@ content-type: application/json
 }
 
 ### register success
-POST http://localhost:{{$dotenv PORT}}/api/auth/register HTTP/1.1
+POST http://{{host}}/api/auth/register HTTP/1.1
 content-type: application/json
 
 {
-    "email": "fauzan.habifb@outlook.com",
+    "email": "fauzan.habib@outlook.com",
     "password": "password",
     "re_password": "password",
-    "username": "icanstik",
+    "username": "ojanojan",
     "role": "renter"
 }
 
 ### pass didn't match
-POST http://localhost:{{$dotenv PORT}}/api/auth/login HTTP/1.1
+POST http://{{host}}/api/auth/login HTTP/1.1
 content-type: application/json
 
 {
@@ -75,29 +80,58 @@ content-type: application/json
     "password": "passwordd"
 }
 
-### with token depcreated
-POST http://localhost:{{$dotenv PORT}}/api/auth/deserialize HTTP/1.1
+### token expired
+POST http://{{host}}/api/auth/deserialize HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJlbWFpbCI6Im1hbWFuQG1haWwuY28iLCJ1c2VybmFtZSI6Im1hbWFuIn0sImlhdCI6MTU5MjI3MzMzMywiZXhwIjoxNTkyNzA1MzMzfQ.7-gNBs7YV7ZYVcCBpJVDGWLKnmlM00WZxmuHW3qhxHE
 
-### with token deprecated
-POST http://localhost:{{$dotenv PORT}}/api/auth/deserialize HTTP/1.1
+### token malformed
+POST http://{{host}}/api/auth/deserialize HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer diacakacak.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Im1hbWFuQG1haWwuY28ifSwiaWF0IjoxNTkxOTc0NzM2LCJleHAiOjE1OTI0MDY3MzZ9.5RQPC0WvsUmMxLNQBVkmm1qkHPolcIZbyaPnuHCy7zc
+Authorization: Bearer eyJhbGciOiJII1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6Im5pa29AbWFpbC5jbyIsInVzZXJuYW1lIjoibmlrb2NoYW4ifSwiaWF0IjoxNTkyNzQyMjI0LCJleHAiOjE1OTMxNzQyMjR9.mX596FLokhXiyZBsNhCh2efBJt8QeKbsOsCvHowDDTw
+
+### test mail
+GET http://{{host}}/api/auth/mail
 
 ###
-GET http://localhost:{{$dotenv PORT}}/api/auth/mail
-
-###
-POST http://localhost:{{$dotenv PORT}}/api/auth/verify
+POST http://{{host}}/api/auth/verify
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6Im5pa29AbWFpbC5jbyIsInVzZXJuYW1lIjoibmlrb2NoYW4ifSwiaWF0IjoxNTkyNzI5OTg5LCJleHAiOjE1OTMxNjE5ODl9.y90tqjgHzxddITNTmtWi0GpLUEPAfXG7-C-B7aaojKs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJlbWFpbCI6ImZhdXphbi5oYWJpYkBvdXRsb29rLmNvbSIsInVzZXJuYW1lIjoib2phbm9qYW4ifSwiaWF0IjoxNTkzMDYzNDc2LCJleHAiOjE1OTM0OTU0NzZ9.0_2Tx9OChL8PP2oQDDhHqfgyxu2bvlXvdaAT_x72ziM
 
 {
-    "otp" : 8754
+    "otp" : 2266
 }
 
 ###
-POST http://localhost:{{$dotenv PORT}}/api/auth/resend
+POST http://{{host}}/api/auth/resend
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJlbWFpbCI6Im5pa29AbWFpbC5jbyIsInVzZXJuYW1lIjoibmlrb2NoYW4ifSwiaWF0IjoxNTkyNzI5OTg5LCJleHAiOjE1OTMxNjE5ODl9.y90tqjgHzxddITNTmtWi0GpLUEPAfXG7-C-B7aaojKs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJlbWFpbCI6ImZhdXphbi5oYWJpYkBvdXRsb29rLmNvbSIsInVzZXJuYW1lIjoib2phbm9qYW4ifSwiaWF0IjoxNTkzMDYzNDc2LCJleHAiOjE1OTM0OTU0NzZ9.0_2Tx9OChL8PP2oQDDhHqfgyxu2bvlXvdaAT_x72ziM
+###  200 user ada, semua valid => dapet token
+
+POST http://68.183.183.98:5000/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "fauzan.habib@outlook.com",
+    "password": "password"
+}
+
+### test mail
+GET http://68.183.183.98:5000/api/auth/mail
+
+### 400 user exists
+POST http://68.183.183.98:5000/api/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "email": "fauzan.habib@outlook.com",
+    "password": "password",
+    "re_password": "password",
+    "username": "fauzen",
+    "role": "rentee"
+}
+
+###
+POST http://68.183.183.98:5000/api/auth/resend
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJlbWFpbCI6ImZhdXphbi5oYWJpYkBvdXRsb29rLmNvbSJ9LCJpYXQiOjE1OTMwNTkyNTIsImV4cCI6MTU5MzQ5MTI1Mn0._nj9Z3IT7i1GGJw3a_uQlQ5lkJg7cD2PHLBDq8hZ6Mg
