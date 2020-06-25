@@ -21,7 +21,7 @@ const VenueCard = ({ item, navigation }) => {
         type="custom"
         ratingBackgroundColor={COLORS.body}
         ratingTextColor={COLORS.main}
-        startingValue={+item.rating}
+        startingValue={+item.avgRating}
         style={styles.rating}
       />
     </TouchableOpacity>

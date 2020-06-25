@@ -5,7 +5,7 @@ export const loadVenues = (options) => async (dispatch) => {
   dispatch({ type: FETCH_VENUES });
   try {
     const { data } = await api.get('/venues', {
-      params: options && { city: options.city }
+      params: options && { ...options }
     });
     dispatch({ type: SET_VENUES, payload: data });
   } catch (err) {

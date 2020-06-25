@@ -27,7 +27,10 @@ const VenuesScreen = ({ navigation, route }) => {
   const { venues, isLoading } = useSelector((state) => state.venue);
   const [ cities, setCities ] = useState([]);
   const [ modalVisible, setModalVisible ] = useState(false);
+  const [ modalSortVisible, setModalSortVisible ] = useState(false);
   const [ city, setCity ] = useState(null);
+  const [ byRating, setByRating ] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('rating')
   console.log(venues);
   const dispatch = useDispatch();
 
@@ -50,10 +53,14 @@ const VenuesScreen = ({ navigation, route }) => {
   }, []);
 
   const onFilter = () => {
-    dispatch(loadVenues({ city }));
+    dispatch(loadVenues({ city, byRating: selectedFilter === 'rating' }));
     setModalVisible(false);
   };
-
+  
+  const onSort = () => {
+    dispatch(loadVenues({ city, byRating: selectedFilter === 'rating' }));
+    setModalSortVisible(false);
+  };
   const Filter = () => (
     <View>
       <Text>filter by city: </Text>
@@ -68,6 +75,20 @@ const VenuesScreen = ({ navigation, route }) => {
         <Picker.Item label="All" value={null} />
       </Picker>
       <Button title="ok" onPress={onFilter} />
+    </View>
+  );
+
+  const Sort = () => (
+    <View>
+      <Text>sort by </Text>
+      <Picker
+        selectedValue={selectedFilter}
+        style={{ height: 50, width: 150 }}
+        onValueChange={(itemValue, itemIndex) => setSelectedFilter(itemValue)}
+      >
+        <Picker.Item label="rating" value={true} />
+      </Picker>
+      <Button title="ok" onPress={onSort} />
     </View>
   );
 
@@ -88,7 +109,13 @@ const VenuesScreen = ({ navigation, route }) => {
           }}
           icon="tune"
         />
-        <BreadCrumbs title="sort by" icon="sort" />
+        <BreadCrumbs
+          title="sort by"
+          icon="sort"
+          onPress={() => {
+            setModalSortVisible(true);
+          }}
+        />
       </View>
 
       <FlatList
@@ -126,6 +153,28 @@ const VenuesScreen = ({ navigation, route }) => {
               <Icon name="close" size={30} />
             </TouchableOpacity>
             <Filter />
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalSortVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={{ padding: 10 }}
+              onPress={() => {
+                setModalSortVisible(!modalSortVisible);
+              }}
+            >
+              <Icon name="close" size={30} />
+            </TouchableOpacity>
+            <Sort />
           </View>
         </View>
       </Modal>

@@ -13,7 +13,6 @@ export const Venue = sequelize.define('venue', {
   address: TEXT,
   location: GEOMETRY('POINT'),
   imageUrl: STRING(255),
-  rating: DECIMAL(1),
   city: STRING(150)
 });
 
@@ -88,4 +87,5 @@ Reservation.belongsToMany(DateTime, { through: ReservedDateTime });
 DateTime.belongsToMany(Reservation, { through: ReservedDateTime });
 
 Venue.hasMany(Package);
+Package.belongsTo(Venue);
 Venue.hasMany(Review)
