@@ -120,7 +120,7 @@ export const packages = [
     name: 'Morning Bliss',
     slotTimeStarts: '07:00',
     slotTimeEnds: '12:00',
-    pricePerPax: 200000,
+    pricePerPax: 400000,
     description: `### Overview
 For min 30 guests - Time Slot: 07 am - 12pm
 at Kamayajaya (Upper Chapel) or Kamaratih (Lower Chapel)
@@ -135,7 +135,7 @@ at Kamayajaya (Upper Chapel) or Kamaratih (Lower Chapel)
     name: 'Stunning Sunset Package',
     slotTimeStarts: '14:00',
     slotTimeEnds: '24:00',
-    pricePerPax: 300000,
+    pricePerPax: 700000,
     description: `### overview
 Minimum Spending Applied
 Time Slot: 2 pm - 12 midnight
