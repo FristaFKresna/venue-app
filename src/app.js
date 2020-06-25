@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("listening on port..", PORT);
   sequelize
-    .sync({ force: true })
+    .sync({ force: false })
     .then(() => {
       // create a dummy user
       User.bulkCreate(users, { individualHooks: true })
