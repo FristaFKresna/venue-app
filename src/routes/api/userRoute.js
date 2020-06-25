@@ -28,7 +28,7 @@ route.get('/:id', (req, res) => {
 route.get('/:id/reservations', async (req, res) => {
   const reservations = await Reservation.findAll({
     where: { userId: req.params.id },
-    include: [ { model: DateTime, include: [ { model: Package } ] }, { model: Order, where: { status: 'success' } } ]
+    include: [ { model: DateTime, include: [ { model: Package, include: Venue } ] }, { model: Order, where: { status: 'success' } } ]
   });
   res.send(reservations);
 });
