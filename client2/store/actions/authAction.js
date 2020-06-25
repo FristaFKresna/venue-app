@@ -10,7 +10,11 @@ export const login = ({ email, password }) => async (dispatch) => {
     const { data } = await api.post('/auth/deserialize');
     dispatch({ type: SET_USER, payload: { token, ...data } });
   } catch (err) {
-    dispatch({ type: SET_AUTH_ERROR, payload: err.response.data.errors });
+    if(err.response) {
+      dispatch({ type: SET_AUTH_ERROR, payload: err.response.data.errors });
+    } else {
+      dispatch({type: SET_AUTH_ERROR, payload: [{msg: err.message}]})
+    }
   }
 };
 
@@ -22,7 +26,11 @@ export const register = (body) => async (dispatch) => {
     const { data } = await api.post('/auth/deserialize');
     dispatch({ type: SET_USER, payload: { token, ...data } });
   } catch (err) {
-    dispatch({ type: SET_AUTH_ERROR, payload: err.response.data.errors });
+    if(err.response) {
+      dispatch({ type: SET_AUTH_ERROR, payload: err.response.data.errors });
+    } else {
+      dispatch({type: SET_AUTH_ERROR, payload: [{msg: err.message}]})
+    }
   }
 };
 
