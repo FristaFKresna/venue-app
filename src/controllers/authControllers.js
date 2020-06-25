@@ -53,7 +53,7 @@ export const login = async (req, res) => {
       const token = jwt.sign({ user: { id: newUser.id, email: newUser.email } }, JWT_SECRET, {
         expiresIn: '5 days'
       });
-      // await sendVerificationEmail(newUser.otp, newUser.email)
+      await sendVerificationEmail(newUser.otp, newUser.email)
       res.send({ token });
     } catch (err) {
       console.log(err);
