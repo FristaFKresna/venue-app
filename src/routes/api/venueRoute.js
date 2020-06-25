@@ -34,19 +34,27 @@ route.get('/', (req, res) => {
   }
   
   const orders = []
-  if(req.query.byRating) {
+  if(req.query.sortBy === 'rating') {
     orders.push([col('avgRating'), 'desc'])
-    console.log('called')
   }
+
+  if(req.query.sortBy === 'price') {
+    orders.push([col('avgPrice'), 'desc'])
+  }
+
 
   Venue.findAll({
     where: filters,
     attributes: {
-      include: [ [ fn('AVG', col('reviews.rating')), 'avgRating' ] ]
+      include: [ [ fn('AVG', col('reviews.rating')), 'avgRating' ], [fn('AVG', col('packages.pricePerPax')), 'avgPrice'] ]
     },
     include: [
       {
         model: Review,
+        attributes: []
+      },
+      {
+        model: Package,
         attributes: []
       }
     ],

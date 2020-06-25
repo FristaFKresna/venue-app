@@ -53,12 +53,12 @@ const VenuesScreen = ({ navigation, route }) => {
   }, []);
 
   const onFilter = () => {
-    dispatch(loadVenues({ city, byRating: selectedFilter === 'rating' }));
+    dispatch(loadVenues({ city, sortBy: selectedFilter }));
     setModalVisible(false);
   };
   
   const onSort = () => {
-    dispatch(loadVenues({ city, byRating: selectedFilter === 'rating' }));
+    dispatch(loadVenues({ city, sortBy: selectedFilter }));
     setModalSortVisible(false);
   };
   const Filter = () => (
@@ -86,7 +86,8 @@ const VenuesScreen = ({ navigation, route }) => {
         style={{ height: 50, width: 150 }}
         onValueChange={(itemValue, itemIndex) => setSelectedFilter(itemValue)}
       >
-        <Picker.Item label="rating" value={true} />
+        <Picker.Item label="rating" value={'rating'} />
+        <Picker.Item label="price" value={'price'} />
       </Picker>
       <Button title="ok" onPress={onSort} />
     </View>

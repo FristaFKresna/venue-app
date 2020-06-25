@@ -14,6 +14,7 @@ const VenueCard = ({ item, navigation }) => {
       <Image source={{ uri: item.imageUrl }} style={{ height: 150 }} />
       <Text style={styles.title}>{item.name}</Text>
       <Text style={styles.address}>{item.city.toUpperCase()}, ID</Text>
+      <Text style={styles.address}>{item.avgPrice > 500000 ? '$ $ $' : item.avgPrice > 240000 ? '$ $' : '$'}</Text>
       <Rating
         imageSize={10}
         readonly
