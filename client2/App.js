@@ -9,6 +9,7 @@ import DrawerNavigation from './navigation/DrawerNavigation';
 import VerificationScreen from './screens/VerificationScreen';
 import { setToken, api } from './utils/axios';
 import { SET_USER } from './store/actions/actionTypes';
+import LoadingScreen from './screens/LoadingScreen';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -20,7 +21,9 @@ const MyTheme = {
 
 function App(props) {
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(false)
   React.useEffect(() => {
+    setLoading(true)
     AsyncStorage.getItem('token')
       .then((token) => {
         if (token) {
@@ -30,15 +33,16 @@ function App(props) {
       })
       .then(({ data }) => {
         dispatch({ type: SET_USER, payload: { ...data } });
+        setLoading(false)
       });
   }, []);
   const auth = useSelector((state) => state.auth);
   return (
     <View style={styles.container}>
       {/* <StatusBar /> */}
-      <NavigationContainer theme={MyTheme}>
-        {!auth.username ? <AuthNavigator /> : auth.isVerified ? <DrawerNavigation /> : <VerificationScreen />}
-      </NavigationContainer>
+      {!loading ? <NavigationContainer theme={MyTheme}>
+        {!auth.id ? <AuthNavigator /> : auth.isVerified ? <DrawerNavigation /> : <VerificationScreen />}
+      </NavigationContainer> : <LoadingScreen text='venue-app loading..' />}
     </View>
   );
 }
