@@ -15,10 +15,12 @@ import sequelize from '../../config/db';
 import { Op } from 'sequelize';
 import core from '../../config/midtrans';
 import { PackagePayment } from '../../models/PaymentPayload';
+import jwtAuth from '../../middlewares/jwtAuth'
+import userAuthorize from '../../middlewares/userAuthorize';
 const route = Router();
 
 // TODO protect route
-route.get('/:id', (req, res) => {
+route.get('/:id', jwtAuth, userAuthorize, (req, res) => {
   User.findByPk(req.params.id, { include: Venue }).then((user) => res.send(user.toJSON())).catch((err) => {
     res.send({ errors: [ { msg: err.msg } ] });
   });
