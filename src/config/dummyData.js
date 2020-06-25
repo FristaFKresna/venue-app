@@ -75,7 +75,6 @@ export const venues = [
       coordinates: [ -8.816237, 115.088825 ]
     },
     imageUrl: `https://london.bridestory.com/images/c_fill,dpr_2.0,f_auto,fl_progressive,pg_1,q_80,w_680/v1/assets/kamaya-4-ry0xpiuj8/kamaya-bali_kamaya-bali-weddings1590373599_1.jpg`,
-    rating: 4.5,
     userId: 1
   },
   {
@@ -87,7 +86,6 @@ export const venues = [
       coordinates: [ -6.244197, 106.782606 ]
     },
     imageUrl: `https://london.bridestory.com/images/c_fill,dpr_2.0,f_auto,fl_progressive,pg_1,q_80,w_680/v1/assets/WEDDING_4_yayotg/sheraton-grand-jakarta-gandaria-city-hotel_sheraton-grand-gandaria-city-grand-ballroom_1.jpg`,
-    rating: 4.5,
     userId: 1
   },
   {
@@ -99,7 +97,6 @@ export const venues = [
       coordinates: [ -6.9230042, 107.6237907 ]
     },
     imageUrl: `https://london.bridestory.com/images/c_fill,dpr_2.0,f_auto,fl_progressive,pg_1,q_80,w_680/v1/assets/chappel-BkRQNkgMU/papandayan_hb-grill-garden_2.jpg`,
-    rating: 4.5,
     userId: 1
   }
 ];
