@@ -1,16 +1,13 @@
 import nodemailer from 'nodemailer';
 
 let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  secure: true,
+  service: 'Gmail',
   port: 587,
+  secure: false,
   auth: {
-    user: process.env.MAIL,
-    pass: process.env.MAIL_PASS
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS
   },
-  tls: {
-    rejectUnauthorized: false
-  }
 });
 
 export const sendVerificationEmail = (token, receiver) => transporter.sendMail({
