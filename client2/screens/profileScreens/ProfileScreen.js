@@ -23,6 +23,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <View>
       <Image source={{ uri: user.avatar }} style={{ width: 128, height: 128 }} />
+      <Text>Hello, {user.username}</Text>
       <Text>{user.firstName}</Text>
       <Text>{user.lastName}</Text>
       <Button title="sign out" onPress={handleSignOut} />
