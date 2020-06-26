@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
       }
     }
     case SIGN_OUT: {
-      return {...state, id: null}
+      return {...state, id: null, isVerified: null}
     }
     default:
       return state;

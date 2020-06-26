@@ -7,16 +7,16 @@ import { CommonActions } from '@react-navigation/native';
 const ProfileScreen = ({ navigation }) => {
   const handleSignOut = () => {
     dispatch(signOut());
-    navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            {
-              name: 'Venues',
-            },
-          ],
-        })
-      );
+    // navigation.dispatch(
+    //     CommonActions.reset({
+    //       index: 0,
+    //       routes: [
+    //         {
+    //           name: 'Home',
+    //         },
+    //       ],
+    //     })
+    //   );
   };
   const user = useSelector((state) => state.auth);
   const dispatch = useDispatch();
