@@ -16,6 +16,7 @@ Built within 10 workdays, this app is by no mean to be used for production use (
 - passwords are hashed and not stored in plain text
 - request that requires authentication is handled with `jwtAuth` middleware
 - server-side validation using express validate
+- OTP verification + resend using nodemailer
 
 ### Book and check availability by date
 ![alt](docs/change-by-date.gif)
@@ -53,12 +54,13 @@ Built within 10 workdays, this app is by no mean to be used for production use (
 - IMPORTANT!! for MySQL 8.x
 please edit `node_modules > sequelize > lib > data-types.js` change the variable `GeomFromText` to `ST_GeomFromText`. This issue is related with sequelize
 
+
 ### usage
 - change all .env variable with your keys
 - to run the server `npm run dev:server`
 - see example *.http files in the root folder for example usage
 - using ORM, no need to manually create the table
-
+- mock payment using [midtrans sandbox](https://simulator.sandbox.midtrans.com/bni/va/index), please create an account if you don't have one
 
 ### client
 - `cd client2`
