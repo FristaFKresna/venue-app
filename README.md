@@ -3,9 +3,9 @@
 A full-stack venue booking app
 
 ## The idea 
-We've noticed that there was no venue booking app in Indonesia. Some big companies, like Bridestory, implements a similar idea, but we have to manually ask the renter for availability and booking. So I decided to create this app.
+My friend [avindah](https://www.github.com/avin2520) noticed that there was no venue booking app in Indonesia. Some big companies, like Bridestory, implements a similar idea, but the rentee(user) have to manually ask the renter for availability and booking. So I decided to create this app.
 
-Built within 10 workdays, this app is by no mean to be used for production (think of it as a hackathon-style app), but this app demonstrate how to build an app from scratch, from front to back, from a business model to database design and code. 
+Built within 10 workdays, this app is by no mean to be used for production use (think of it as a hackathon-style app), but this app demonstrate how to build an app from scratch, from front to back, from a business model to database design and code. 
 
 ## Features
 
@@ -15,6 +15,7 @@ Built within 10 workdays, this app is by no mean to be used for production (thin
 - auth credentials are stored in a redux store at the front-end
 - passwords are hashed and not stored in plain text
 - request that requires authentication is handled with `jwtAuth` middleware
+- server side validation using express validate
 
 ### Book and check availability by date
 ![alt](docs/change-by-date.gif)
@@ -42,6 +43,8 @@ Built within 10 workdays, this app is by no mean to be used for production (thin
 - some routes that should be protected and using authorization/authentication middleware don't
 - not the best UI/UX design
 - there must be a better DB design but I don't know yet
+- this repo doesn't practice the good git commits
+- and much more..
 
 ## Installation
 
